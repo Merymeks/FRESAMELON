@@ -1,0 +1,1885 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2759
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs22 \cf2 <!DOCTYPE html>\
+<html lang="es">\
+<head>\
+  <meta charset="UTF-8" />\
+  <title>FRESAMELON</title>\
+  <meta name="viewport" content="width=device-width, initial-scale=1" />\
+\
+  <!-- PWA -->\
+  <link rel="manifest" href="manifest.json">\
+  <meta name="theme-color" content="#222222">\
+\
+  <!-- iOS standalone -->\
+  <meta name="apple-mobile-web-app-capable" content="yes">\
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">\
+  <meta name="apple-mobile-web-app-title" content="FRESAMELON">\
+\
+  <!-- Iconos iOS (crea estos archivos en /icons) -->\
+  <link rel="apple-touch-icon" href="icons/icon-192.png">\
+  <link rel="apple-touch-icon" sizes="512x512" href="icons/icon-512.png">\
+\
+  <style>\
+    * \{\
+      box-sizing: border-box;\
+      margin: 0;\
+      padding: 0;\
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;\
+    \}\
+\
+    body \{\
+      background: #1a1a1a;\
+      color: #222;\
+      min-height: 100vh;\
+      display: flex;\
+      justify-content: center;\
+      padding: 20px;\
+    \}\
+\
+    .app \{\
+      background: #f5f5f5;\
+      width: 100%;\
+      max-width: 1100px;\
+      border-radius: 16px;\
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);\
+      padding: 20px 20px 24px;\
+    \}\
+\
+    .app-header \{\
+      margin-bottom: 16px;\
+    \}\
+\
+    .app-title \{\
+      font-size: 24px;\
+      margin-bottom: 4px;\
+    \}\
+\
+    .app-subtitle \{\
+      font-size: 14px;\
+      color: #666;\
+    \}\
+\
+    .tabs \{\
+      display: flex;\
+      gap: 8px;\
+      margin: 16px 0 12px;\
+      border-bottom: 1px solid #eee;\
+      padding-bottom: 8px;\
+      flex-wrap: wrap;\
+    \}\
+\
+    .tab-btn \{\
+      border: none;\
+      background: transparent;\
+      padding: 8px 14px;\
+      border-radius: 999px;\
+      font-size: 14px;\
+      cursor: pointer;\
+      color: #555;\
+      transition: 0.15s ease;\
+    \}\
+\
+    .tab-btn:hover \{\
+      background: #FFF176;\
+    \}\
+\
+    .tab-btn.active \{\
+      background: #1a1a1a;\
+      color: #fff;\
+    \}\
+\
+    .view \{\
+      display: none;\
+      margin-top: 8px;\
+    \}\
+\
+    .view.active \{\
+      display: block;\
+    \}\
+\
+    .section-title \{\
+      font-size: 18px;\
+      margin-bottom: 10px;\
+    \}\
+\
+    .section-description \{\
+      font-size: 13px;\
+      color: #666;\
+      margin-bottom: 10px;\
+    \}\
+\
+    .section-subtitle \{\
+      font-size: 14px;\
+      margin-top: 12px;\
+      margin-bottom: 6px;\
+      color: #333;\
+    \}\
+\
+    .grid \{\
+      display: grid;\
+      gap: 12px;\
+    \}\
+\
+    @media (min-width: 768px) \{\
+      .grid-2 \{\
+        grid-template-columns: 1.1fr 1fr;\
+      \}\
+    \}\
+\
+    .form-row \{\
+      display: flex;\
+      gap: 8px;\
+      margin-bottom: 10px;\
+      flex-wrap: wrap;\
+    \}\
+\
+    input[type="text"],\
+    input[type="number"],\
+    input[type="date"],\
+    select,\
+    textarea \{\
+      flex: 1;\
+      padding: 8px 10px;\
+      border-radius: 8px;\
+      border: 1px solid #ddd;\
+      font-size: 14px;\
+    \}\
+\
+    textarea \{\
+      min-height: 60px;\
+      resize: vertical;\
+    \}\
+\
+    .btn \{\
+      padding: 8px 14px;\
+      border-radius: 999px;\
+      border: none;\
+      cursor: pointer;\
+      font-size: 14px;\
+      white-space: nowrap;\
+      transition: 0.15s ease;\
+    \}\
+\
+    .btn-primary \{\
+      background: #222;\
+      color: #fff;\
+    \}\
+\
+    .btn-primary:hover \{\
+      background: #FFF176;\
+    \}\
+\
+    .btn-ghost \{\
+      background: transparent;\
+      color: #666;\
+    \}\
+\
+    .btn-ghost:hover \{\
+      background: #FFF176;\
+    \}\
+\
+    .summary-cards \{\
+      display: grid;\
+      gap: 10px;\
+    \}\
+\
+    @media (min-width: 640px) \{\
+      .summary-cards \{\
+        grid-template-columns: repeat(3, minmax(0, 1fr));\
+      \}\
+    \}\
+\
+    .summary-card \{\
+      background: #fafafa;\
+      border-radius: 12px;\
+      padding: 10px 12px;\
+      border: 1px solid #eee;\
+      cursor: default;\
+    \}\
+\
+    .summary-card.clickable \{\
+      cursor: pointer;\
+      transition: 0.15s ease;\
+    \}\
+\
+    .summary-card.clickable:hover \{\
+      background: #f0f0f5;\
+    \}\
+\
+    .summary-label \{\
+      font-size: 12px;\
+      color: #666;\
+      margin-bottom: 4px;\
+    \}\
+\
+    .summary-value \{\
+      font-size: 18px;\
+      font-weight: 600;\
+    \}\
+\
+    .summary-note \{\
+      font-size: 11px;\
+      color: #888;\
+      margin-top: 4px;\
+    \}\
+\
+    .summary-value.income \{\
+      color: #1a7f37;\
+    \}\
+\
+    .summary-value.expense \{\
+      color: #d12f2f;\
+    \}\
+\
+    .summary-value.balance \{\
+      color: #1a4f7f;\
+    \}\
+\
+    .table-wrapper \{\
+      margin-top: 12px;\
+      overflow-x: auto;\
+    \}\
+\
+    table \{\
+      width: 100%;\
+      border-collapse: collapse;\
+      font-size: 13px;\
+    \}\
+\
+    th, td \{\
+      padding: 6px 8px;\
+      border-bottom: 1px solid #eee;\
+      text-align: left;\
+      white-space: nowrap;\
+    \}\
+\
+    th \{\
+      background: #fafafa;\
+      font-weight: 500;\
+    \}\
+\
+    tr:last-child td \{\
+      border-bottom: none;\
+    \}\
+\
+    .small \{\
+      font-size: 11px;\
+      color: #888;\
+    \}\
+\
+    .amount-income \{\
+      color: #1a7f37;\
+    \}\
+\
+    .amount-expense \{\
+      color: #d12f2f;\
+    \}\
+\
+    .highlight-positive \{\
+      color: #1a7f37;\
+    \}\
+\
+    .highlight-negative \{\
+      color: #d12f2f;\
+    \}\
+\
+    .highlight-neutral \{\
+      color: #666;\
+    \}\
+\
+    .hint \{\
+      font-size: 11px;\
+      color: #888;\
+      margin-bottom: 6px;\
+    \}\
+\
+    /* Month switch */\
+    .month-switch \{\
+      display: flex;\
+      gap: 8px;\
+      align-items: center;\
+      margin-bottom: 10px;\
+      flex-wrap: wrap;\
+    \}\
+\
+    /* Year grid */\
+    .year-grid \{\
+      display: grid;\
+      gap: 10px;\
+    \}\
+\
+    @media (min-width: 700px) \{\
+      .year-grid \{\
+        grid-template-columns: repeat(4, minmax(0, 1fr));\
+      \}\
+    \}\
+\
+    .month-card \{\
+      background: #fafafa;\
+      border-radius: 12px;\
+      border: 1px solid #eee;\
+      padding: 10px 12px;\
+      cursor: pointer;\
+      transition: 0.15s ease;\
+    \}\
+\
+    .month-card:hover \{\
+      background: #f0f0f5;\
+    \}\
+\
+    .month-name \{\
+      font-size: 14px;\
+      margin-bottom: 4px;\
+    \}\
+\
+    .month-saving \{\
+      font-size: 16px;\
+      font-weight: 600;\
+    \}\
+\
+    .month-saving.positive \{\
+      color: #1a7f37;\
+    \}\
+\
+    .month-saving.negative \{\
+      color: #d12f2f;\
+    \}\
+\
+    .month-saving.zero \{\
+      color: #777;\
+    \}\
+\
+    .month-note \{\
+      font-size: 11px;\
+      color: #888;\
+      margin-top: 2px;\
+    \}\
+\
+    .total-saving-wrapper \{\
+      margin-top: 18px;\
+      display: flex;\
+      justify-content: space-between;\
+      align-items: center;\
+      gap: 12px;\
+      flex-wrap: wrap;\
+    \}\
+\
+    .total-saving-card \{\
+      flex: 1;\
+      min-width: 220px;\
+      background: #fdfcf4;\
+      border-radius: 12px;\
+      border: 1px solid #f0e5b5;\
+      padding: 10px 12px;\
+      cursor: pointer;\
+      transition: 0.15s ease;\
+    \}\
+\
+    .total-saving-card:hover \{\
+      background: #f6f0d8;\
+    \}\
+\
+    .total-saving-label \{\
+      font-size: 13px;\
+      color: #666;\
+      margin-bottom: 4px;\
+    \}\
+\
+    .total-saving-value \{\
+      font-size: 20px;\
+      font-weight: 600;\
+      color: #1a4f7f;\
+    \}\
+\
+    .badge-year \{\
+      display: inline-block;\
+      padding: 2px 8px;\
+      border-radius: 999px;\
+      font-size: 11px;\
+      background: #f0f0f5;\
+      color: #666;\
+      margin-left: 6px;\
+    \}\
+\
+    /* Estados especiales para el balance anual (tarjeta ahorro total) */\
+    .total-saving-card.positive \{\
+      background: linear-gradient(135deg, #ecfdf3, #dcfce7);\
+      border-color: #86efac;\
+    \}\
+\
+    .total-saving-card.negative \{\
+      background: linear-gradient(135deg, #fef2f2, #fee2e2);\
+      border-color: #fecaca;\
+    \}\
+\
+    /* Savings chart */\
+    #savings-chart svg \{\
+      width: 100%;\
+      max-width: 100%;\
+      height: auto;\
+    \}\
+\
+    .month-header \{\
+      font-size: 16px;\
+      margin-bottom: 6px;\
+    \}\
+\
+    .month-header span \{\
+      margin-left: 6px;\
+      font-size: 13px;\
+      color: #666;\
+    \}\
+  </style>\
+</head>\
+<body>\
+  <div class="app">\
+    <header class="app-header">\
+      <div class="app-title">FRESAMELON</div>\
+      <div class="app-subtitle">\
+        Ahorros mes a mes para todo el a\'f1o 2026. VAMOS EQUIPO!\
+      </div>\
+    </header>\
+\
+    <nav class="tabs">\
+      <button class="tab-btn active" data-view="year-view">2026</button>\
+      <button class="tab-btn" data-view="ingresos-view">INGRESOS</button>\
+      <button class="tab-btn" data-view="facturas-view">FACTURAS</button>\
+      <button class="tab-btn" data-view="gastos-view">GASTOS</button>\
+      <button class="tab-btn" data-view="presupuesto-view">PRESUPUESTO</button>\
+      <button class="tab-btn" data-view="overview-view">OVERVIEW MES</button>\
+      <button class="tab-btn" data-view="savings-view">AHORRO 2026</button>\
+    </nav>\
+\
+    <!-- 2026 year view -->\
+    <section id="year-view" class="view active">\
+      <div class="section-title">MES A MES \'96 2026</div>\
+      <p class="section-description">\
+        Cada tarjeta muestra el ahorro del mes (ingresos \uc0\u8722  facturas \u8722  gastos). Haz clic en un mes para ver el detalle.\
+      </p>\
+\
+      <div class="year-grid" id="year-grid"></div>\
+\
+      <div class="total-saving-wrapper">\
+        <div class="total-saving-card" id="total-saving-card">\
+          <div class="total-saving-label">\
+            AHORRO TOTAL ACUMULADO 2026\
+          </div>\
+          <div class="total-saving-value" id="total-saving-value">0.00 \'80</div>\
+          <div class="small">\
+            Haz clic para ver el gr\'e1fico de evoluci\'f3n del ahorro durante todo el a\'f1o.\
+          </div>\
+        </div>\
+      </div>\
+    </section>\
+\
+    <!-- Ingresos view -->\
+    <section id="ingresos-view" class="view">\
+      <div class="section-title">INGRESOS</div>\
+      <p class="section-description">\
+        Registra los ingresos de Maria y Alba. Mes seleccionado: \
+        <span id="ing-selected-month-label"></span>\
+      </p>\
+\
+      <div class="month-switch">\
+        <button class="btn btn-ghost month-prev">&larr; Mes anterior</button>\
+        <button class="btn btn-ghost month-next">Mes siguiente &rarr;</button>\
+      </div>\
+\
+      <div class="grid grid-2">\
+        <div>\
+          <div class="section-subtitle">A\'f1adir ingreso</div>\
+\
+          <div class="form-row">\
+            <input type="date" id="ing-date" />\
+          </div>\
+\
+          <div class="form-row">\
+            <select id="ing-category">\
+              <option value="Maria - Salario">Maria - Salario</option>\
+              <option value="Maria - Peliculas">Maria - Peliculas</option>\
+              <option value="Maria - Extra">Maria - Extra</option>\
+              <option value="Alba - Salario">Alba - Salario</option>\
+              <option value="Alba - Extra">Alba - Extra</option>\
+            </select>\
+            <input type="text" id="ing-category-custom" placeholder="Otra categor\'eda ingreso (opcional)" />\
+          </div>\
+\
+          <div class="form-row">\
+            <input type="text" id="ing-description" placeholder="Descripci\'f3n (n\'f3mina, proyecto, etc.)" />\
+          </div>\
+\
+          <div class="form-row">\
+            <input type="number" id="ing-amount" placeholder="Importe" step="0.01" min="0" />\
+          </div>\
+\
+          <div class="form-row">\
+            <textarea id="ing-notes" placeholder="Notas (opcional)"></textarea>\
+          </div>\
+\
+          <div class="form-row">\
+            <button class="btn btn-primary" id="ing-add-btn">A\'f1adir ingreso</button>\
+            <button class="btn btn-ghost" id="ing-clear-btn">Limpiar</button>\
+          </div>\
+        </div>\
+\
+        <div>\
+          <div class="section-subtitle">Ingresos recientes (mes seleccionado)</div>\
+          <p class="hint">Mostrando los \'faltimos 20 ingresos del mes elegido.</p>\
+          <div class="table-wrapper">\
+            <table id="ing-table">\
+              <thead>\
+                <tr>\
+                  <th>Fecha</th>\
+                  <th>Categor\'eda</th>\
+                  <th>Descripci\'f3n</th>\
+                  <th>Importe</th>\
+                  <th></th>\
+                </tr>\
+              </thead>\
+              <tbody></tbody>\
+            </table>\
+          </div>\
+        </div>\
+      </div>\
+    </section>\
+\
+    <!-- Facturas view -->\
+    <section id="facturas-view" class="view">\
+      <div class="section-title">FACTURAS</div>\
+      <p class="section-description">\
+        Registra las facturas fijas de casa. Mes seleccionado: \
+        <span id="fac-selected-month-label"></span>\
+      </p>\
+\
+      <div class="month-switch">\
+        <button class="btn btn-ghost month-prev">&larr; Mes anterior</button>\
+        <button class="btn btn-ghost month-next">Mes siguiente &rarr;</button>\
+      </div>\
+\
+      <div class="grid grid-2">\
+        <div>\
+          <div class="section-subtitle">A\'f1adir factura</div>\
+\
+          <div class="form-row">\
+            <input type="date" id="fac-date" />\
+          </div>\
+\
+          <div class="form-row">\
+            <select id="fac-category">\
+              <option value="Alquiler">Alquiler</option>\
+              <option value="Renting">Renting</option>\
+              <option value="Luz">Luz</option>\
+              <option value="Lledo">Lledo</option>\
+              <option value="Internet">Internet</option>\
+              <option value="Agua">Agua</option>\
+              <option value="Adeslas">Adeslas</option>\
+              <option value="Suscripciones">Suscripciones</option>\
+            </select>\
+            <input type="text" id="fac-category-custom" placeholder="Otra categor\'eda factura (opcional)" />\
+          </div>\
+\
+          <div class="form-row">\
+            <input type="text" id="fac-description" placeholder="Descripci\'f3n (alquiler mayo, luz, etc.)" />\
+          </div>\
+\
+          <div class="form-row">\
+            <input type="number" id="fac-amount" placeholder="Importe" step="0.01" min="0" />\
+          </div>\
+\
+          <div class="form-row">\
+            <textarea id="fac-notes" placeholder="Notas (opcional)"></textarea>\
+          </div>\
+\
+          <div class="form-row">\
+            <button class="btn btn-primary" id="fac-add-btn">A\'f1adir factura</button>\
+            <button class="btn btn-ghost" id="fac-clear-btn">Limpiar</button>\
+          </div>\
+\
+          <div class="form-row">\
+            <button class="btn btn-ghost" id="fac-duplicate-btn">\
+              Duplicar facturas mes anterior\
+            </button>\
+          </div>\
+        </div>\
+\
+        <div>\
+          <div class="section-subtitle">Facturas recientes (mes seleccionado)</div>\
+          <p class="hint">\'daltimas 20 facturas del mes elegido.</p>\
+          <div class="table-wrapper">\
+            <table id="fac-table">\
+              <thead>\
+                <tr>\
+                  <th>Fecha</th>\
+                  <th>Categor\'eda</th>\
+                  <th>Descripci\'f3n</th>\
+                  <th>Importe</th>\
+                  <th></th>\
+                </tr>\
+              </thead>\
+              <tbody></tbody>\
+            </table>\
+          </div>\
+        </div>\
+      </div>\
+    </section>\
+\
+    <!-- Gastos view -->\
+    <section id="gastos-view" class="view">\
+      <div class="section-title">GASTOS</div>\
+      <p class="section-description">\
+        Registra los gastos variables. Mes seleccionado: \
+        <span id="gas-selected-month-label"></span>\
+      </p>\
+\
+      <div class="month-switch">\
+        <button class="btn btn-ghost month-prev">&larr; Mes anterior</button>\
+        <button class="btn btn-ghost month-next">Mes siguiente &rarr;</button>\
+      </div>\
+\
+      <div class="grid grid-2">\
+        <div>\
+          <div class="section-subtitle">A\'f1adir gasto</div>\
+\
+          <div class="form-row">\
+            <input type="date" id="gas-date" />\
+          </div>\
+\
+          <div class="form-row">\
+            <select id="gas-category">\
+              <option value="Compra Hogar">Compra Hogar</option>\
+              <option value="Gasolina">Gasolina</option>\
+              <option value="Cosas de Casa">Cosas de Casa</option>\
+              <option value="Ropa">Ropa</option>\
+              <option value="Salud">Salud</option>\
+              <option value="Entretenimiento">Entretenimiento</option>\
+              <option value="Comida Fuera">Comida Fuera</option>\
+              <option value="Miscelaneo">Miscelaneo</option>\
+              <option value="Alba">Alba</option>\
+              <option value="Maria">Maria</option>\
+              <option value="Max">Max</option>\
+            </select>\
+            <input type="text" id="gas-category-custom" placeholder="Otra categor\'eda gasto (opcional)" />\
+          </div>\
+\
+          <div class="form-row">\
+            <input type="text" id="gas-description" placeholder="Descripci\'f3n (compra, cine, etc.)" />\
+          </div>\
+\
+          <div class="form-row">\
+            <input type="number" id="gas-amount" placeholder="Importe" step="0.01" min="0" />\
+          </div>\
+\
+          <div class="form-row">\
+            <textarea id="gas-notes" placeholder="Notas (opcional)"></textarea>\
+          </div>\
+\
+          <div class="form-row">\
+            <button class="btn btn-primary" id="gas-add-btn">A\'f1adir gasto</button>\
+            <button class="btn btn-ghost" id="gas-clear-btn">Limpiar</button>\
+          </div>\
+        </div>\
+\
+        <div>\
+          <div class="section-subtitle">Gastos recientes (mes seleccionado)</div>\
+          <p class="hint">\'daltimos 20 gastos del mes elegido.</p>\
+          <div class="table-wrapper">\
+            <table id="gas-table">\
+              <thead>\
+                <tr>\
+                  <th>Fecha</th>\
+                  <th>Categor\'eda</th>\
+                  <th>Descripci\'f3n</th>\
+                  <th>Importe</th>\
+                  <th></th>\
+                </tr>\
+              </thead>\
+              <tbody></tbody>\
+            </table>\
+          </div>\
+        </div>\
+      </div>\
+    </section>\
+\
+    <!-- Presupuesto view -->\
+    <section id="presupuesto-view" class="view">\
+      <div class="section-title">PRESUPUESTO MENSUAL</div>\
+      <p class="section-description">\
+        Fija los importes objetivo por categor\'eda (facturas y gastos variables). Aplica para todo el a\'f1o 2026.\
+      </p>\
+\
+      <div class="grid grid-2">\
+        <div>\
+          <div class="section-subtitle">Presupuesto Facturas</div>\
+          <p class="hint">Importe previsto mensual por factura.</p>\
+\
+          <div class="form-row">\
+            <select id="pre-fac-category">\
+              <option value="Alquiler">Alquiler</option>\
+              <option value="Renting">Renting</option>\
+              <option value="Luz">Luz</option>\
+              <option value="Lledo">Lledo</option>\
+              <option value="Internet">Internet</option>\
+              <option value="Agua">Agua</option>\
+              <option value="Adeslas">Adeslas</option>\
+              <option value="Suscripciones">Suscripciones</option>\
+            </select>\
+            <input type="text" id="pre-fac-category-custom" placeholder="Otra categor\'eda factura (opcional)" />\
+          </div>\
+\
+          <div class="form-row">\
+            <input type="number" id="pre-fac-amount" placeholder="Presupuesto mensual" step="0.01" min="0" />\
+          </div>\
+\
+          <div class="form-row">\
+            <button class="btn btn-primary" id="pre-fac-save-btn">Guardar presupuesto factura</button>\
+          </div>\
+\
+          <div class="section-subtitle">Presupuesto Gastos</div>\
+          <p class="hint">Importe previsto mensual para gastos variables.</p>\
+\
+          <div class="form-row">\
+            <select id="pre-gas-category">\
+              <option value="Compra Hogar">Compra Hogar</option>\
+              <option value="Gasolina">Gasolina</option>\
+              <option value="Cosas de Casa">Cosas de Casa</option>\
+              <option value="Ropa">Ropa</option>\
+              <option value="Salud">Salud</option>\
+              <option value="Entretenimiento">Entretenimiento</option>\
+              <option value="Comida Fuera">Comida Fuera</option>\
+              <option value="Miscelaneo">Miscelaneo</option>\
+              <option value="Alba">Alba</option>\
+              <option value="Maria">Maria</option>\
+              <option value="Max">Max</option>\
+            </select>\
+            <input type="text" id="pre-gas-category-custom" placeholder="Otra categor\'eda gasto (opcional)" />\
+          </div>\
+\
+          <div class="form-row">\
+            <input type="number" id="pre-gas-amount" placeholder="Presupuesto mensual" step="0.01" min="0" />\
+          </div>\
+\
+          <div class="form-row">\
+            <button class="btn btn-primary" id="pre-gas-save-btn">Guardar presupuesto gasto</button>\
+          </div>\
+        </div>\
+\
+        <div>\
+          <div class="section-subtitle">Presupuestos Facturas</div>\
+          <div class="table-wrapper">\
+            <table id="pre-fac-table">\
+              <thead>\
+                <tr>\
+                  <th>Categor\'eda</th>\
+                  <th>Presupuesto</th>\
+                  <th></th>\
+                </tr>\
+              </thead>\
+              <tbody></tbody>\
+            </table>\
+          </div>\
+\
+          <div class="section-subtitle">Presupuestos Gastos</div>\
+          <div class="table-wrapper">\
+            <table id="pre-gas-table">\
+              <thead>\
+                <tr>\
+                  <th>Categor\'eda</th>\
+                  <th>Presupuesto</th>\
+                  <th></th>\
+                </tr>\
+              </thead>\
+              <tbody></tbody>\
+            </table>\
+          </div>\
+        </div>\
+      </div>\
+    </section>\
+\
+    <!-- Overview mes view -->\
+    <section id="overview-view" class="view">\
+      <div class="section-title">OVERVIEW MENSUAL</div>\
+      <p class="section-description">\
+        Resumen del mes seleccionado y acceso r\'e1pido a ingresos, facturas, gastos y presupuesto del mes.\
+      </p>\
+\
+      <div class="month-switch">\
+        <button class="btn btn-ghost month-prev">&larr; Mes anterior</button>\
+        <button class="btn btn-ghost month-next">Mes siguiente &rarr;</button>\
+      </div>\
+\
+      <div class="month-header">\
+        Mes: <span id="overview-month-label"></span>\
+        <span class="badge-year">2026</span>\
+      </div>\
+\
+      <div class="summary-cards" style="margin-top:10px; margin-bottom:12px;" id="overview-cards"></div>\
+\
+      <div class="section-subtitle">Ver detalle</div>\
+      <div class="summary-cards" id="month-nav-cards"></div>\
+    </section>\
+\
+    <!-- Ahorro 2026 view -->\
+    <section id="savings-view" class="view">\
+      <div class="section-title">AHORRO 2026 \'96 EVOLUCI\'d3N</div>\
+      <p class="section-description">\
+        Gr\'e1fico y tabla del ahorro mensual a lo largo de 2026. Se ir\'e1 rellenando conforme avance el a\'f1o.\
+      </p>\
+\
+      <div class="section-subtitle">RESUMEN ANUAL</div>\
+      <div class="summary-cards" id="year-summary-cards"></div>\
+\
+      <div class="section-subtitle" style="margin-top: 14px;">Gr\'e1fico ahorro mensual</div>\
+      <div id="savings-chart"></div>\
+\
+      <div class="section-subtitle">Detalle por mes</div>\
+      <div class="table-wrapper">\
+        <table id="savings-table">\
+          <thead>\
+            <tr>\
+              <th>Mes</th>\
+              <th>Ahorro mes</th>\
+              <th>Ahorro acumulado</th>\
+            </tr>\
+          </thead>\
+          <tbody></tbody>\
+        </table>\
+      </div>\
+    </section>\
+  </div>\
+\
+  <!-- L\'d3GICA JS -->\
+  <script>\
+    const STORAGE_TRANSACTIONS = "homeBudget_transactions_v3";\
+    const STORAGE_BUDGETS = "homeBudget_budgets_v3";\
+    const TARGET_YEAR = 2026;\
+\
+    const MONTH_NAMES = [\
+      "ENERO", "FEBRERO", "MARZO", "ABRIL",\
+      "MAYO", "JUNIO", "JULIO", "AGOSTO",\
+      "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"\
+    ];\
+\
+    function loadFromStorage(key, defaultValue) \{\
+      const raw = localStorage.getItem(key);\
+      if (!raw) return defaultValue;\
+      try \{\
+        return JSON.parse(raw);\
+      \} catch \{\
+        return defaultValue;\
+      \}\
+    \}\
+\
+    function saveToStorage(key, value) \{\
+      localStorage.setItem(key, JSON.stringify(value));\
+    \}\
+\
+    let transactions = loadFromStorage(STORAGE_TRANSACTIONS, []);\
+    let budgets = loadFromStorage(STORAGE_BUDGETS, \{ facturas: \{\}, gastos: \{\} \});\
+\
+    if (!budgets.facturas || !budgets.gastos) \{\
+      budgets = \{ facturas: budgets.facturas || \{\}, gastos: budgets.gastos || \{\} \};\
+    \}\
+\
+    let selectedYear = TARGET_YEAR;\
+    let selectedMonth = 0; // 0 = enero\
+\
+    // Tabs\
+    const tabButtons = document.querySelectorAll(".tab-btn");\
+    const views = document.querySelectorAll(".view");\
+\
+    function showView(viewId) \{\
+      views.forEach((view) => \{\
+        view.classList.toggle("active", view.id === viewId);\
+      \});\
+      tabButtons.forEach((btn) => \{\
+        const target = btn.getAttribute("data-view");\
+        btn.classList.toggle("active", target === viewId);\
+      \});\
+\
+      if (viewId === "year-view") \{\
+        renderYearDashboard();\
+      \} else if (viewId === "ingresos-view") \{\
+        renderIngresosTable();\
+        updateMonthLabels();\
+      \} else if (viewId === "facturas-view") \{\
+        renderFacturasTable();\
+        updateMonthLabels();\
+      \} else if (viewId === "gastos-view") \{\
+        renderGastosTable();\
+        updateMonthLabels();\
+      \} else if (viewId === "presupuesto-view") \{\
+        renderPresupuestoTables();\
+      \} else if (viewId === "overview-view") \{\
+        renderOverview();\
+      \} else if (viewId === "savings-view") \{\
+        renderSavingsView();\
+      \}\
+    \}\
+\
+    tabButtons.forEach((btn) => \{\
+      btn.addEventListener("click", () => \{\
+        const target = btn.getAttribute("data-view");\
+        showView(target);\
+      \});\
+    \});\
+\
+    // Helpers\
+    function formatMoney(value) \{\
+      const num = Number(value) || 0;\
+      return num.toFixed(2);\
+    \}\
+\
+    function getTransactionsForMonth(year, monthIndex) \{\
+      return transactions.filter((tx) => \{\
+        const d = new Date(tx.date);\
+        return d.getFullYear() === year && d.getMonth() === monthIndex;\
+      \});\
+    \}\
+\
+    function getCategoryFromSelect(selectEl, customEl) \{\
+      const customVal = customEl.value.trim();\
+      if (customVal) return customVal;\
+      return selectEl.value;\
+    \}\
+\
+    function computeMonthStats(year, monthIndex) \{\
+      const monthTx = getTransactionsForMonth(year, monthIndex);\
+      let income = 0;\
+      let facturas = 0;\
+      let gastos = 0;\
+\
+      monthTx.forEach((tx) => \{\
+        const amt = Number(tx.amount) || 0;\
+        if (tx.type === "income") \{\
+          income += amt;\
+        \} else if (tx.type === "expense") \{\
+          if (tx.group === "factura") facturas += amt;\
+          if (tx.group === "gasto") gastos += amt;\
+        \}\
+      \});\
+\
+      return \{\
+        income,\
+        facturas,\
+        gastos,\
+        balance: income - facturas - gastos\
+      \};\
+    \}\
+\
+    function computeYearSavings() \{\
+      const balances = [];\
+      for (let m = 0; m < 12; m++) \{\
+        const stats = computeMonthStats(TARGET_YEAR, m);\
+        balances.push(stats.balance);\
+      \}\
+      return balances;\
+    \}\
+\
+    function computeYearTotals() \{\
+      let totalIncome = 0;\
+      let totalFacturas = 0;\
+      let totalGastos = 0;\
+\
+      for (let m = 0; m < 12; m++) \{\
+        const stats = computeMonthStats(TARGET_YEAR, m);\
+        totalIncome += stats.income;\
+        totalFacturas += stats.facturas;\
+        totalGastos += stats.gastos;\
+      \}\
+\
+      const totalExpenses = totalFacturas + totalGastos;\
+      const totalBalance = totalIncome - totalExpenses;\
+\
+      return \{ totalIncome, totalExpenses, totalBalance \};\
+    \}\
+\
+    // Year 2026 dashboard\
+    function renderYearDashboard() \{\
+      const grid = document.getElementById("year-grid");\
+      const totalSavingValueEl = document.getElementById("total-saving-value");\
+      const totalSavingCardEl = document.getElementById("total-saving-card");\
+\
+      grid.innerHTML = "";\
+      let totalSaving = 0;\
+\
+      for (let m = 0; m < 12; m++) \{\
+        const stats = computeMonthStats(TARGET_YEAR, m);\
+        const bal = stats.balance;\
+        totalSaving += bal;\
+\
+        const card = document.createElement("div");\
+        card.className = "month-card";\
+        card.addEventListener("click", () => \{\
+          selectedYear = TARGET_YEAR;\
+          selectedMonth = m;\
+          showView("overview-view");\
+        \});\
+\
+        const nameEl = document.createElement("div");\
+        nameEl.className = "month-name";\
+        nameEl.textContent = MONTH_NAMES[m];\
+\
+        const savingEl = document.createElement("div");\
+        savingEl.className = "month-saving";\
+        let cls = "zero";\
+        if (bal > 0) cls = "positive";\
+        else if (bal < 0) cls = "negative";\
+        savingEl.classList.add(cls);\
+        savingEl.textContent = formatMoney(bal) + " \'80";\
+\
+        const noteEl = document.createElement("div");\
+        noteEl.className = "month-note";\
+        if (bal === 0) \{\
+          noteEl.textContent = "Sin datos o ahorro 0 \'80";\
+        \} else if (bal > 0) \{\
+          noteEl.textContent = "Mes en positivo";\
+        \} else \{\
+          noteEl.textContent = "Mes en negativo";\
+        \}\
+\
+        card.appendChild(nameEl);\
+        card.appendChild(savingEl);\
+        card.appendChild(noteEl);\
+\
+        grid.appendChild(card);\
+      \}\
+\
+      totalSavingValueEl.textContent = formatMoney(totalSaving) + " \'80";\
+\
+      totalSavingCardEl.classList.remove("positive", "negative");\
+      if (totalSaving > 0) \{\
+        totalSavingCardEl.classList.add("positive");\
+      \} else if (totalSaving < 0) \{\
+        totalSavingCardEl.classList.add("negative");\
+      \}\
+    \}\
+\
+    // Ahorro 2026 view\
+    function renderSavingsView() \{\
+      const data = computeYearSavings();\
+      const chartContainer = document.getElementById("savings-chart");\
+      const tableBody = document.querySelector("#savings-table tbody");\
+      const summaryContainer = document.getElementById("year-summary-cards");\
+\
+      const \{ totalIncome, totalExpenses, totalBalance \} = computeYearTotals();\
+      summaryContainer.innerHTML = "";\
+\
+      const cardsData = [\
+        \{\
+          label: "Ingreso total 2026",\
+          value: totalIncome,\
+          className: "income"\
+        \},\
+        \{\
+          label: "Gastos totales 2026",\
+          value: totalExpenses,\
+          className: "expense"\
+        \},\
+        \{\
+          label: "Balance total 2026",\
+          value: totalBalance,\
+          className: "balance",\
+          note: totalBalance >= 0 ? "A\'f1o en positivo." : "A\'f1o en negativo."\
+        \}\
+      ];\
+\
+      cardsData.forEach((c) => \{\
+        const card = document.createElement("div");\
+        card.className = "summary-card";\
+\
+        const labelEl = document.createElement("div");\
+        labelEl.className = "summary-label";\
+        labelEl.textContent = c.label;\
+\
+        const valueEl = document.createElement("div");\
+        valueEl.className = "summary-value " + c.className;\
+        valueEl.textContent = formatMoney(c.value) + " \'80";\
+\
+        card.appendChild(labelEl);\
+        card.appendChild(valueEl);\
+\
+        if (c.note) \{\
+          const noteEl = document.createElement("div");\
+          noteEl.className = "summary-note";\
+          noteEl.textContent = c.note;\
+          card.appendChild(noteEl);\
+        \}\
+\
+        summaryContainer.appendChild(card);\
+      \});\
+\
+      const maxVal = Math.max(...data, 0);\
+      const minVal = Math.min(...data, 0);\
+      const range = maxVal - minVal || 1;\
+\
+      const width = 600;\
+      const height = 200;\
+      const padding = 30;\
+\
+      let points = "";\
+      if (data.length === 1) \{\
+        const x = width / 2;\
+        const y = height / 2;\
+        points = `$\{x\},$\{y\}`;\
+      \} else \{\
+        points = data\
+          .map((v, i) => \{\
+            const x =\
+              padding +\
+              (data.length === 1\
+                ? (width - 2 * padding) / 2\
+                : (i / (data.length - 1)) * (width - 2 * padding));\
+            const y =\
+              height -\
+              padding -\
+              ((v - minVal) / range) * (height - 2 * padding);\
+            return `$\{x\},$\{y\}`;\
+          \})\
+          .join(" ");\
+      \}\
+\
+      chartContainer.innerHTML = `\
+        <svg viewBox="0 0 $\{width\} $\{height\}" preserveAspectRatio="none">\
+          <line x1="$\{padding\}" y1="$\{height - padding\}" x2="$\{width - padding\}" y2="$\{height - padding\}" stroke="#ccc" stroke-width="1" />\
+          <line x1="$\{padding\}" y1="$\{padding\}" x2="$\{padding\}" y2="$\{height - padding\}" stroke="#ccc" stroke-width="1" />\
+          <polyline fill="none" stroke="#1a4f7f" stroke-width="2" points="$\{points\}" />\
+        </svg>\
+      `;\
+\
+      tableBody.innerHTML = "";\
+      let acumulado = 0;\
+      data.forEach((val, i) => \{\
+        acumulado += val;\
+        const tr = document.createElement("tr");\
+\
+        const tdMes = document.createElement("td");\
+        tdMes.textContent = MONTH_NAMES[i];\
+\
+        const tdMesAh = document.createElement("td");\
+        tdMesAh.textContent = formatMoney(val) + " \'80";\
+        if (val > 0) tdMesAh.className = "highlight-positive";\
+        else if (val < 0) tdMesAh.className = "highlight-negative";\
+        else tdMesAh.className = "highlight-neutral";\
+\
+        const tdAcum = document.createElement("td");\
+        tdAcum.textContent = formatMoney(acumulado) + " \'80";\
+        if (acumulado > 0) tdAcum.className = "highlight-positive";\
+        else if (acumulado < 0) tdAcum.className = "highlight-negative";\
+        else tdAcum.className = "highlight-neutral";\
+\
+        tr.appendChild(tdMes);\
+        tr.appendChild(tdMesAh);\
+        tr.appendChild(tdAcum);\
+        tableBody.appendChild(tr);\
+      \});\
+    \}\
+\
+    // Generic add transaction\
+    function addTransaction(\{ dateInput, categorySelect, categoryCustom, descriptionInput, amountInput, notesInput, type, group \}) \{\
+      const date = dateInput.value || new Date().toISOString().slice(0, 10);\
+      const d = new Date(date);\
+      if (d.getFullYear() !== TARGET_YEAR) \{\
+        if (!confirm("La fecha no es de 2026. \'bfQuieres guardarla igualmente?")) \{\
+          return false;\
+        \}\
+      \}\
+\
+      const category = getCategoryFromSelect(categorySelect, categoryCustom) || "Otros";\
+      const description = descriptionInput.value.trim() || "(sin descripci\'f3n)";\
+      const amount = Number(amountInput.value);\
+      if (!amount || amount <= 0) \{\
+        alert("Introduce un importe v\'e1lido.");\
+        return false;\
+      \}\
+      const notes = notesInput.value.trim();\
+\
+      const tx = \{\
+        id: Date.now() + Math.random(),\
+        date,\
+        type,\
+        group,\
+        category,\
+        description,\
+        amount,\
+        notes,\
+        createdAt: new Date().toISOString()\
+      \};\
+\
+      transactions.push(tx);\
+      transactions.sort((a, b) => new Date(b.date) - new Date(a.date));\
+      saveToStorage(STORAGE_TRANSACTIONS, transactions);\
+\
+      renderYearDashboard();\
+      renderOverview();\
+      return true;\
+    \}\
+\
+    function deleteTransaction(id) \{\
+      if (!confirm("\'bfBorrar este registro?")) return;\
+      transactions = transactions.filter((tx) => tx.id !== id);\
+      saveToStorage(STORAGE_TRANSACTIONS, transactions);\
+      renderYearDashboard();\
+      renderOverview();\
+      renderIngresosTable();\
+      renderFacturasTable();\
+      renderGastosTable();\
+    \}\
+\
+    function updateMonthLabels() \{\
+      const label = MONTH_NAMES[selectedMonth] + " 2026";\
+      const ingLabel = document.getElementById("ing-selected-month-label");\
+      const facLabel = document.getElementById("fac-selected-month-label");\
+      const gasLabel = document.getElementById("gas-selected-month-label");\
+      const ovLabel = document.getElementById("overview-month-label");\
+\
+      if (ingLabel) ingLabel.textContent = label;\
+      if (facLabel) facLabel.textContent = label;\
+      if (gasLabel) gasLabel.textContent = label;\
+      if (ovLabel) ovLabel.textContent = MONTH_NAMES[selectedMonth];\
+    \}\
+\
+    // Month switching logic\
+    function changeMonth(delta) \{\
+      selectedMonth += delta;\
+      if (selectedMonth < 0) selectedMonth = 11;\
+      if (selectedMonth > 11) selectedMonth = 0;\
+\
+      updateMonthLabels();\
+\
+      const activeView = document.querySelector(".view.active");\
+      if (!activeView) return;\
+\
+      switch (activeView.id) \{\
+        case "overview-view":\
+          renderOverview();\
+          break;\
+        case "ingresos-view":\
+          renderIngresosTable();\
+          resetIngresosForm();\
+          break;\
+        case "facturas-view":\
+          renderFacturasTable();\
+          resetFacturasForm();\
+          break;\
+        case "gastos-view":\
+          renderGastosTable();\
+          resetGastosForm();\
+          break;\
+      \}\
+    \}\
+\
+    const monthPrevButtons = document.querySelectorAll(".month-prev");\
+    const monthNextButtons = document.querySelectorAll(".month-next");\
+\
+    monthPrevButtons.forEach((btn) =>\
+      btn.addEventListener("click", () => changeMonth(-1))\
+    );\
+    monthNextButtons.forEach((btn) =>\
+      btn.addEventListener("click", () => changeMonth(1))\
+    );\
+\
+    // Ingresos\
+    const ingDate = document.getElementById("ing-date");\
+    const ingCategory = document.getElementById("ing-category");\
+    const ingCategoryCustom = document.getElementById("ing-category-custom");\
+    const ingDescription = document.getElementById("ing-description");\
+    const ingAmount = document.getElementById("ing-amount");\
+    const ingNotes = document.getElementById("ing-notes");\
+    const ingAddBtn = document.getElementById("ing-add-btn");\
+    const ingClearBtn = document.getElementById("ing-clear-btn");\
+    const ingTableBody = document.querySelector("#ing-table tbody");\
+\
+    function resetIngresosForm() \{\
+      ingCategory.value = "Maria - Salario";\
+      ingCategoryCustom.value = "";\
+      ingDescription.value = "";\
+      ingAmount.value = "";\
+      ingNotes.value = "";\
+      const anyDate = new Date(TARGET_YEAR, selectedMonth, 1).toISOString().slice(0,10);\
+      ingDate.value = anyDate;\
+    \}\
+\
+    function renderIngresosTable() \{\
+      ingTableBody.innerHTML = "";\
+      const monthTx = getTransactionsForMonth(selectedYear, selectedMonth).filter(\
+        (tx) => tx.group === "ingreso"\
+      );\
+\
+      if (monthTx.length === 0) \{\
+        const tr = document.createElement("tr");\
+        const td = document.createElement("td");\
+        td.colSpan = 5;\
+        td.textContent = "Sin ingresos registrados en este mes.";\
+        td.className = "small";\
+        tr.appendChild(td);\
+        ingTableBody.appendChild(tr);\
+        return;\
+      \}\
+\
+      const recent = monthTx.slice(0, 20);\
+      recent.forEach((tx) => \{\
+        const tr = document.createElement("tr");\
+        const d = new Date(tx.date);\
+        const dateStr = !isNaN(d) ? d.toLocaleDateString() : tx.date;\
+\
+        const tdDate = document.createElement("td");\
+        const tdCat = document.createElement("td");\
+        const tdDesc = document.createElement("td");\
+        const tdAmt = document.createElement("td");\
+        const tdActions = document.createElement("td");\
+\
+        tdDate.textContent = dateStr;\
+        tdCat.textContent = tx.category;\
+        tdDesc.textContent = tx.description;\
+        if (tx.notes) \{\
+          const notesEl = document.createElement("div");\
+          notesEl.className = "small";\
+          notesEl.textContent = tx.notes;\
+          tdDesc.appendChild(notesEl);\
+        \}\
+\
+        tdAmt.className = "amount-income";\
+        tdAmt.textContent = "+" + formatMoney(tx.amount) + " \'80";\
+\
+        const delBtn = document.createElement("button");\
+        delBtn.className = "btn btn-ghost";\
+        delBtn.textContent = "Borrar";\
+        delBtn.addEventListener("click", () => deleteTransaction(tx.id));\
+        tdActions.appendChild(delBtn);\
+\
+        tr.appendChild(tdDate);\
+        tr.appendChild(tdCat);\
+        tr.appendChild(tdDesc);\
+        tr.appendChild(tdAmt);\
+        tr.appendChild(tdActions);\
+        ingTableBody.appendChild(tr);\
+      \});\
+    \}\
+\
+    ingAddBtn.addEventListener("click", () => \{\
+      const ok = addTransaction(\{\
+        dateInput: ingDate,\
+        categorySelect: ingCategory,\
+        categoryCustom: ingCategoryCustom,\
+        descriptionInput: ingDescription,\
+        amountInput: ingAmount,\
+        notesInput: ingNotes,\
+        type: "income",\
+        group: "ingreso"\
+      \});\
+      if (ok) \{\
+        resetIngresosForm();\
+        renderIngresosTable();\
+      \}\
+    \});\
+\
+    ingClearBtn.addEventListener("click", resetIngresosForm);\
+\
+    // Facturas\
+    const facDate = document.getElementById("fac-date");\
+    const facCategory = document.getElementById("fac-category");\
+    const facCategoryCustom = document.getElementById("fac-category-custom");\
+    const facDescription = document.getElementById("fac-description");\
+    const facAmount = document.getElementById("fac-amount");\
+    const facNotes = document.getElementById("fac-notes");\
+    const facAddBtn = document.getElementById("fac-add-btn");\
+    const facClearBtn = document.getElementById("fac-clear-btn");\
+    const facTableBody = document.querySelector("#fac-table tbody");\
+    const facDuplicateBtn = document.getElementById("fac-duplicate-btn");\
+\
+    function resetFacturasForm() \{\
+      facCategory.value = "Alquiler";\
+      facCategoryCustom.value = "";\
+      facDescription.value = "";\
+      facAmount.value = "";\
+      facNotes.value = "";\
+      const anyDate = new Date(TARGET_YEAR, selectedMonth, 1).toISOString().slice(0,10);\
+      facDate.value = anyDate;\
+    \}\
+\
+    function renderFacturasTable() \{\
+      facTableBody.innerHTML = "";\
+      const monthTx = getTransactionsForMonth(selectedYear, selectedMonth).filter(\
+        (tx) => tx.group === "factura"\
+      );\
+\
+      if (monthTx.length === 0) \{\
+        const tr = document.createElement("tr");\
+        const td = document.createElement("td");\
+        td.colSpan = 5;\
+        td.textContent = "Sin facturas registradas en este mes.";\
+        td.className = "small";\
+        tr.appendChild(td);\
+        facTableBody.appendChild(tr);\
+        return;\
+      \}\
+\
+      const recent = monthTx.slice(0, 20);\
+      recent.forEach((tx) => \{\
+        const tr = document.createElement("tr");\
+        const d = new Date(tx.date);\
+        const dateStr = !isNaN(d) ? d.toLocaleDateString() : tx.date;\
+\
+        const tdDate = document.createElement("td");\
+        const tdCat = document.createElement("td");\
+        const tdDesc = document.createElement("td");\
+        const tdAmt = document.createElement("td");\
+        const tdActions = document.createElement("td");\
+\
+        tdDate.textContent = dateStr;\
+        tdCat.textContent = tx.category;\
+        tdDesc.textContent = tx.description;\
+        if (tx.notes) \{\
+          const notesEl = document.createElement("div");\
+          notesEl.className = "small";\
+          notesEl.textContent = tx.notes;\
+          tdDesc.appendChild(notesEl);\
+        \}\
+\
+        tdAmt.className = "amount-expense";\
+        tdAmt.textContent = "-" + formatMoney(tx.amount) + " \'80";\
+\
+        const delBtn = document.createElement("button");\
+        delBtn.className = "btn btn-ghost";\
+        delBtn.textContent = "Borrar";\
+        delBtn.addEventListener("click", () => deleteTransaction(tx.id));\
+        tdActions.appendChild(delBtn);\
+\
+        tr.appendChild(tdDate);\
+        tr.appendChild(tdCat);\
+        tr.appendChild(tdDesc);\
+        tr.appendChild(tdAmt);\
+        tr.appendChild(tdActions);\
+        facTableBody.appendChild(tr);\
+      \});\
+    \}\
+\
+    facAddBtn.addEventListener("click", () => \{\
+      const ok = addTransaction(\{\
+        dateInput: facDate,\
+        categorySelect: facCategory,\
+        categoryCustom: facCategoryCustom,\
+        descriptionInput: facDescription,\
+        amountInput: facAmount,\
+        notesInput: facNotes,\
+        type: "expense",\
+        group: "factura"\
+      \});\
+      if (ok) \{\
+        resetFacturasForm();\
+        renderFacturasTable();\
+      \}\
+    \});\
+\
+    facClearBtn.addEventListener("click", resetFacturasForm);\
+\
+    function duplicateLastMonthFacturas() \{\
+      if (selectedMonth === 0) \{\
+        alert("Solo puedes duplicar facturas a partir de febrero 2026 (se usa el mes anterior dentro de 2026).");\
+        return;\
+      \}\
+\
+      const prevMonth = selectedMonth - 1;\
+      const prevYear = TARGET_YEAR;\
+\
+      const prevTx = transactions.filter((tx) => \{\
+        if (tx.group !== "factura") return false;\
+        const d = new Date(tx.date);\
+        return d.getFullYear() === prevYear && d.getMonth() === prevMonth;\
+      \});\
+\
+      if (prevTx.length === 0) \{\
+        alert("No hay facturas en el mes anterior para duplicar.");\
+        return;\
+      \}\
+\
+      const confirmMsg =\
+        `Se van a duplicar $\{prevTx.length\} facturas de $\{MONTH_NAMES[prevMonth]\} 2026 ` +\
+        `en $\{MONTH_NAMES[selectedMonth]\} 2026. \'bfContinuar?`;\
+      if (!confirm(confirmMsg)) return;\
+\
+      const newTxs = prevTx.map((tx) => \{\
+        const oldDate = new Date(tx.date);\
+        const day = isNaN(oldDate) ? 1 : oldDate.getDate();\
+        const newDate = new Date(TARGET_YEAR, selectedMonth, day);\
+        return \{\
+          ...tx,\
+          id: Date.now() + Math.random(),\
+          date: newDate.toISOString().slice(0, 10),\
+          createdAt: new Date().toISOString()\
+        \};\
+      \});\
+\
+      transactions = transactions.concat(newTxs);\
+      transactions.sort((a, b) => new Date(b.date) - new Date(a.date));\
+      saveToStorage(STORAGE_TRANSACTIONS, transactions);\
+\
+      renderYearDashboard();\
+      renderOverview();\
+      renderFacturasTable();\
+    \}\
+\
+    facDuplicateBtn.addEventListener("click", duplicateLastMonthFacturas);\
+\
+    // Gastos\
+    const gasDate = document.getElementById("gas-date");\
+    const gasCategory = document.getElementById("gas-category");\
+    const gasCategoryCustom = document.getElementById("gas-category-custom");\
+    const gasDescription = document.getElementById("gas-description");\
+    const gasAmount = document.getElementById("gas-amount");\
+    const gasNotes = document.getElementById("gas-notes");\
+    const gasAddBtn = document.getElementById("gas-add-btn");\
+    const gasClearBtn = document.getElementById("gas-clear-btn");\
+    const gasTableBody = document.querySelector("#gas-table tbody");\
+\
+    function resetGastosForm() \{\
+      gasCategory.value = "Compra Hogar";\
+      gasCategoryCustom.value = "";\
+      gasDescription.value = "";\
+      gasAmount.value = "";\
+      gasNotes.value = "";\
+      const anyDate = new Date(TARGET_YEAR, selectedMonth, 1).toISOString().slice(0,10);\
+      gasDate.value = anyDate;\
+    \}\
+\
+    function renderGastosTable() \{\
+      gasTableBody.innerHTML = "";\
+      const monthTx = getTransactionsForMonth(selectedYear, selectedMonth).filter(\
+        (tx) => tx.group === "gasto"\
+      );\
+\
+      if (monthTx.length === 0) \{\
+        const tr = document.createElement("tr");\
+        const td = document.createElement("td");\
+        td.colSpan = 5;\
+        td.textContent = "Sin gastos registrados en este mes.";\
+        td.className = "small";\
+        tr.appendChild(td);\
+        gasTableBody.appendChild(tr);\
+        return;\
+      \}\
+\
+      const recent = monthTx.slice(0, 20);\
+      recent.forEach((tx) => \{\
+        const tr = document.createElement("tr");\
+        const d = new Date(tx.date);\
+        const dateStr = !isNaN(d) ? d.toLocaleDateString() : tx.date;\
+\
+        const tdDate = document.createElement("td");\
+        const tdCat = document.createElement("td");\
+        const tdDesc = document.createElement("td");\
+        const tdAmt = document.createElement("td");\
+        const tdActions = document.createElement("td");\
+\
+        tdDate.textContent = dateStr;\
+        tdCat.textContent = tx.category;\
+        tdDesc.textContent = tx.description;\
+        if (tx.notes) \{\
+          const notesEl = document.createElement("div");\
+          notesEl.className = "small";\
+          notesEl.textContent = tx.notes;\
+          tdDesc.appendChild(notesEl);\
+        \}\
+\
+        tdAmt.className = "amount-expense";\
+        tdAmt.textContent = "-" + formatMoney(tx.amount) + " \'80";\
+\
+        const delBtn = document.createElement("button");\
+        delBtn.className = "btn btn-ghost";\
+        delBtn.textContent = "Borrar";\
+        delBtn.addEventListener("click", () => deleteTransaction(tx.id));\
+        tdActions.appendChild(delBtn);\
+\
+        tr.appendChild(tdDate);\
+        tr.appendChild(tdCat);\
+        tr.appendChild(tdDesc);\
+        tr.appendChild(tdAmt);\
+        tr.appendChild(tdActions);\
+        gasTableBody.appendChild(tr);\
+      \});\
+    \}\
+\
+    gasAddBtn.addEventListener("click", () => \{\
+      const ok = addTransaction(\{\
+        dateInput: gasDate,\
+        categorySelect: gasCategory,\
+        categoryCustom: gasCategoryCustom,\
+        descriptionInput: gasDescription,\
+        amountInput: gasAmount,\
+        notesInput: gasNotes,\
+        type: "expense",\
+        group: "gasto"\
+      \});\
+      if (ok) \{\
+        resetGastosForm();\
+        renderGastosTable();\
+      \}\
+    \});\
+\
+    gasClearBtn.addEventListener("click", resetGastosForm);\
+\
+    // Presupuesto\
+    const preFacCategory = document.getElementById("pre-fac-category");\
+    const preFacCategoryCustom = document.getElementById("pre-fac-category-custom");\
+    const preFacAmount = document.getElementById("pre-fac-amount");\
+    const preFacSaveBtn = document.getElementById("pre-fac-save-btn");\
+    const preFacTableBody = document.querySelector("#pre-fac-table tbody");\
+\
+    const preGasCategory = document.getElementById("pre-gas-category");\
+    const preGasCategoryCustom = document.getElementById("pre-gas-category-custom");\
+    const preGasAmount = document.getElementById("pre-gas-amount");\
+    const preGasSaveBtn = document.getElementById("pre-gas-save-btn");\
+    const preGasTableBody = document.querySelector("#pre-gas-table tbody");\
+\
+    function savePresupuesto(type) \{\
+      if (type === "facturas") \{\
+        const cat = getCategoryFromSelect(preFacCategory, preFacCategoryCustom);\
+        const amount = Number(preFacAmount.value);\
+        if (!cat) \{\
+          alert("Selecciona o escribe una categor\'eda.");\
+          return;\
+        \}\
+        if (!amount || amount <= 0) \{\
+          alert("Introduce un importe de presupuesto v\'e1lido.");\
+          return;\
+        \}\
+        budgets.facturas[cat] = amount;\
+        saveToStorage(STORAGE_BUDGETS, budgets);\
+        renderPresupuestoTables();\
+      \} else \{\
+        const cat = getCategoryFromSelect(preGasCategory, preGasCategoryCustom);\
+        const amount = Number(preGasAmount.value);\
+        if (!cat) \{\
+          alert("Selecciona o escribe una categor\'eda.");\
+          return;\
+        \}\
+        if (!amount || amount <= 0) \{\
+          alert("Introduce un importe de presupuesto v\'e1lido.");\
+          return;\
+        \}\
+        budgets.gastos[cat] = amount;\
+        saveToStorage(STORAGE_BUDGETS, budgets);\
+        renderPresupuestoTables();\
+      \}\
+    \}\
+\
+    function deletePresupuesto(type, cat) \{\
+      if (!confirm("\'bfBorrar presupuesto para " + cat + "?")) return;\
+      if (type === "facturas") delete budgets.facturas[cat];\
+      else delete budgets.gastos[cat];\
+      saveToStorage(STORAGE_BUDGETS, budgets);\
+      renderPresupuestoTables();\
+    \}\
+\
+    function renderPresupuestoTables() \{\
+      preFacTableBody.innerHTML = "";\
+      const facCats = Object.keys(budgets.facturas);\
+      if (facCats.length === 0) \{\
+        const tr = document.createElement("tr");\
+        const td = document.createElement("td");\
+        td.colSpan = 3;\
+        td.textContent = "No hay presupuestos de facturas.";\
+        td.className = "small";\
+        tr.appendChild(td);\
+        preFacTableBody.appendChild(tr);\
+      \} else \{\
+        facCats.sort().forEach((cat) => \{\
+          const tr = document.createElement("tr");\
+          const tdCat = document.createElement("td");\
+          const tdAmt = document.createElement("td");\
+          const tdActions = document.createElement("td");\
+\
+          tdCat.textContent = cat;\
+          tdAmt.textContent = formatMoney(budgets.facturas[cat]) + " \'80";\
+\
+          const delBtn = document.createElement("button");\
+          delBtn.className = "btn btn-ghost";\
+          delBtn.textContent = "Borrar";\
+          delBtn.addEventListener("click", () => deletePresupuesto("facturas", cat));\
+          tdActions.appendChild(delBtn);\
+\
+          tr.appendChild(tdCat);\
+          tr.appendChild(tdAmt);\
+          tr.appendChild(tdActions);\
+          preFacTableBody.appendChild(tr);\
+        \});\
+      \}\
+\
+      preGasTableBody.innerHTML = "";\
+      const gasCats = Object.keys(budgets.gastos);\
+      if (gasCats.length === 0) \{\
+        const tr = document.createElement("tr");\
+        const td = document.createElement("td");\
+        td.colSpan = 3;\
+        td.textContent = "No hay presupuestos de gastos.";\
+        td.className = "small";\
+        tr.appendChild(td);\
+        preGasTableBody.appendChild(tr);\
+      \} else \{\
+        gasCats.sort().forEach((cat) => \{\
+          const tr = document.createElement("tr");\
+          const tdCat = document.createElement("td");\
+          const tdAmt = document.createElement("td");\
+          const tdActions = document.createElement("td");\
+\
+          tdCat.textContent = cat;\
+          tdAmt.textContent = formatMoney(budgets.gastos[cat]) + " \'80";\
+\
+          const delBtn = document.createElement("button");\
+          delBtn.className = "btn btn-ghost";\
+          delBtn.textContent = "Borrar";\
+          delBtn.addEventListener("click", () => deletePresupuesto("gastos", cat));\
+          tdActions.appendChild(delBtn);\
+\
+          tr.appendChild(tdCat);\
+          tr.appendChild(tdAmt);\
+          tr.appendChild(tdActions);\
+          preGasTableBody.appendChild(tr);\
+        \});\
+      \}\
+    \}\
+\
+    preFacSaveBtn.addEventListener("click", () => savePresupuesto("facturas"));\
+    preGasSaveBtn.addEventListener("click", () => savePresupuesto("gastos"));\
+\
+    // Overview mensual (texto grande = secci\'f3n, peque\'f1o = mes)\
+    function renderOverview() \{\
+      updateMonthLabels();\
+      const cardsContainer = document.getElementById("overview-cards");\
+      const monthNav = document.getElementById("month-nav-cards");\
+\
+      const stats = computeMonthStats(selectedYear, selectedMonth);\
+      const income = stats.income;\
+      const facturas = stats.facturas;\
+      const gastos = stats.gastos;\
+      const totalExpenses = facturas + gastos;\
+      const balance = stats.balance;\
+\
+      cardsContainer.innerHTML = "";\
+\
+      const cardsData = [\
+        \{\
+          label: "Ingresos (mes)",\
+          value: income,\
+          className: "income"\
+        \},\
+        \{\
+          label: "Gastos totales (facturas + variables)",\
+          value: totalExpenses,\
+          className: "expense"\
+        \},\
+        \{\
+          label: "Balance final (ahorro mes)",\
+          value: balance,\
+          className: "balance",\
+          note: balance >= 0 ? "Mes en positivo." : "Mes en negativo."\
+        \}\
+      ];\
+\
+      cardsData.forEach((c) => \{\
+        const card = document.createElement("div");\
+        card.className = "summary-card";\
+\
+        const labelEl = document.createElement("div");\
+        labelEl.className = "summary-label";\
+        labelEl.textContent = c.label;\
+\
+        const valueEl = document.createElement("div");\
+        valueEl.className = "summary-value " + c.className;\
+        valueEl.textContent = formatMoney(c.value) + " \'80";\
+\
+        card.appendChild(labelEl);\
+        card.appendChild(valueEl);\
+\
+        if (c.note) \{\
+          const noteEl = document.createElement("div");\
+          noteEl.className = "summary-note";\
+          noteEl.textContent = c.note;\
+          card.appendChild(noteEl);\
+        \}\
+\
+        cardsContainer.appendChild(card);\
+      \});\
+\
+      monthNav.innerHTML = "";\
+\
+      const navItems = [\
+        \{ label: "Ingresos", view: "ingresos-view" \},\
+        \{ label: "Facturas", view: "facturas-view" \},\
+        \{ label: "Gastos", view: "gastos-view" \},\
+        \{ label: "Presupuesto", view: "presupuesto-view" \}\
+      ];\
+\
+      navItems.forEach((item) => \{\
+        const card = document.createElement("div");\
+        card.className = "summary-card clickable";\
+\
+        card.addEventListener("click", () => \{\
+          showView(item.view);\
+        \});\
+\
+        const labelEl = document.createElement("div");\
+        labelEl.className = "summary-label";\
+        labelEl.textContent = MONTH_NAMES[selectedMonth] + " 2026";\
+\
+        const valueEl = document.createElement("div");\
+        valueEl.className = "summary-value";\
+        valueEl.textContent = item.label;\
+\
+        card.appendChild(labelEl);\
+        card.appendChild(valueEl);\
+        monthNav.appendChild(card);\
+      \});\
+    \}\
+\
+    const totalSavingCard = document.getElementById("total-saving-card");\
+    totalSavingCard.addEventListener("click", () => \{\
+      showView("savings-view");\
+    \});\
+\
+    function init() \{\
+      const anyDate = new Date(TARGET_YEAR, selectedMonth, 1).toISOString().slice(0,10);\
+      const ingDate = document.getElementById("ing-date");\
+      const facDate = document.getElementById("fac-date");\
+      const gasDate = document.getElementById("gas-date");\
+\
+      if (ingDate) ingDate.value = anyDate;\
+      if (facDate) facDate.value = anyDate;\
+      if (gasDate) gasDate.value = anyDate;\
+\
+      resetIngresosForm();\
+      resetFacturasForm();\
+      resetGastosForm();\
+\
+      renderYearDashboard();\
+      renderPresupuestoTables();\
+      renderOverview();\
+      updateMonthLabels();\
+    \}\
+\
+    init();\
+  </script>\
+\
+  <!-- Registro Service Worker -->\
+  <script>\
+    if ('serviceWorker' in navigator) \{\
+      window.addEventListener('load', function () \{\
+        navigator.serviceWorker\
+          .register('service-worker.js')\
+          .catch(function (err) \{\
+            console.log('Service worker registration failed:', err);\
+          \});\
+      \});\
+    \}\
+  </script>\
+</body>\
+</html>\
+\
+}
