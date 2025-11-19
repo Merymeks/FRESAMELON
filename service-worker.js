@@ -1,7 +1,9 @@
-const CACHE_NAME = 'fresamelon-v1';
+// bump the version so old cache is discarded
+const CACHE_NAME = 'fresamelon-v2';
 const URLS_TO_CACHE = [
   './',
   './index.html',
+  './styles.css',          // ← add this too
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png'
@@ -25,6 +27,7 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+// (you can keep cache-first for now)
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((response) => {
