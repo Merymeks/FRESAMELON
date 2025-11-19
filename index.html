@@ -301,18 +301,6 @@
       flex-wrap: wrap;
     }
 
-    /* Year grid */
-    .year-grid {
-      display: grid;
-      gap: 10px;
-    }
-
-    @media (min-width: 700px) {
-      .year-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
-    }
-
     .month-card {
       background: #fafafa;
       border-radius: 12px;
@@ -434,59 +422,94 @@
 <body>
   <div class="app">
     <header class="app-header">
-      <div class="app-title">FRESAMELON</div>
-      <div class="app-subtitle">
-        VAMOS EQUIPO!
-      </div>
-    </header>
+  <div class="app-header-row">
+    <img src="icons/icon-192.png" class="app-icon" alt="logo">
+    <div>
+      <div class="app-title">FRESAMELON 2026</div>
+      <div class="app-subtitle">VAMOS EQUIPO!💪🏼</div>
+    </div>
+  </div>
+</header>
 
-    <nav class="tabs">
-      <button class="tab-btn active" data-view="year-view">2026</button>
-      <button class="tab-btn" data-view="ingresos-view">INGRESOS</button>
-      <button class="tab-btn" data-view="facturas-view">FACTURAS</button>
-      <button class="tab-btn" data-view="gastos-view">GASTOS</button>
-      <button class="tab-btn" data-view="presupuesto-view">PRESUPUESTO</button>
-      <button class="tab-btn" data-view="overview-view">OVERVIEW MES</button>
-      <button class="tab-btn" data-view="savings-view">AHORRO 2026</button>
-    </nav>
+    <nav class="tabs tabs-icons">
+  <button class="tab-btn active" data-view="year-view">
+    <span class="tab-icon-circle">📅</span>
+    <span class="tab-text">2026</span>
+  </button>
 
-    <!-- 2026 year view -->
-   <!-- 2026 year view -->
+  <button class="tab-btn" data-view="ingresos-view">
+    <span class="tab-icon-circle">💰</span>
+    <span class="tab-text">Ingresos</span>
+  </button>
+
+  <button class="tab-btn" data-view="facturas-view">
+    <span class="tab-icon-circle">📄</span>
+    <span class="tab-text">Facturas</span>
+  </button>
+
+  <button class="tab-btn" data-view="gastos-view">
+    <span class="tab-icon-circle">💸</span>
+    <span class="tab-text">Gastos</span>
+  </button>
+
+  <button class="tab-btn" data-view="presupuesto-view">
+    <span class="tab-icon-circle">🎯</span>
+    <span class="tab-text">Presupuesto</span>
+  </button>
+
+  <button class="tab-btn" data-view="overview-view">
+    <span class="tab-icon-circle">📊</span>
+    <span class="tab-text">Overview</span>
+  </button>
+
+  <button class="tab-btn" data-view="savings-view">
+    <span class="tab-icon-circle">💎</span>
+    <span class="tab-text">Ahorro</span>
+  </button>
+</nav>
+
+
+<!-- 2026 year view -->
 <section id="year-view" class="view active">
   <div class="year-hero">
-    <!-- Card: annual total balance -->
-    <div class="year-balance-card total-saving-card" id="total-saving-card">
-      <div class="year-balance-label">Balance total 2026</div>
-      <div class="year-balance-value" id="total-saving-value">0.00 €</div>
-     
+    
+<!-- WRAPPER BLANCO que engloba todo el balance -->
+<div class="year-balance-wrapper">
+  <div class="year-balance-card" id="total-saving-card">
+    <div class="year-balance-top">
+      <div class="year-balance-icon">⚖️</div>
+      <div class="year-balance-label">BALANCE TOTAL 2026</div>
     </div>
-
+    <div class="year-balance-value" id="total-saving-value">0.00 €</div>
+  </div>
+</div>
     <!-- Current month summary (income + expenses) -->
-   <div class="current-month-summary">
-  <div class="current-month-header">
-    Mes actual: <span id="current-month-label">Enero</span> 2026
-  </div>
-  <div class="current-month-cards">
-  <!-- INGRESOS -->
-  <div class="summary-pill income-pill">
-    <div class="pill-header">
-      <div class="pill-icon">💰</div>
-      <div class="pill-label">INGRESOS MES</div>
+    <div class="current-month-summary">
+      <div class="current-month-header">
+        Mes actual: <span id="current-month-label">ENERO</span> 2026
+      </div>
+      <div class="current-month-cards">
+        <!-- INGRESOS -->
+        <div class="summary-pill income-pill">
+          <div class="pill-header">
+            <div class="pill-icon">💰</div>
+            <div class="pill-label">INGRESOS MES</div>
+          </div>
+          <div class="pill-value" id="current-income-value">0.00 €</div>
+        </div>
+
+        <!-- GASTOS -->
+        <div class="summary-pill expense-pill">
+          <div class="pill-header">
+            <div class="pill-icon">💸</div>
+            <div class="pill-label">GASTOS MES</div>
+          </div>
+          <div class="pill-value" id="current-expense-value">0.00 €</div>
+        </div>
+      </div>
     </div>
-    <div class="pill-value" id="current-income-value">0.00 €</div>
   </div>
 
-  <!-- GASTOS -->
-  <div class="summary-pill expense-pill">
-    <div class="pill-header">
-      <div class="pill-icon">💸</div>
-      <div class="pill-label">GASTOS MES</div>
-    </div>
-    <div class="pill-value" id="current-expense-value">0.00 €</div>
-  </div>
-</div>
-  </div>
-</div>
 
 
   <!-- 3×4 grid of months -->
