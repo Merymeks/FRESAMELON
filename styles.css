@@ -1,0 +1,153 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2759
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs22 \cf2 /* ===== New home layout (hero + month grid 3\'d74) ===== */\
+\
+.year-hero \{\
+  display: flex;\
+  flex-direction: column;\
+  gap: 12px;\
+\}\
+\
+/* Big annual balance card */\
+.year-balance-card \{\
+  padding: 14px 16px;\
+  border-radius: 18px;\
+  background: rgba(255, 241, 118, 0.);\
+  border: none;\
+  color: #1f2933;\
+\}\
+\
+.year-balance-label \{\
+  font-size: 13px;\
+  text-transform: uppercase;\
+  letter-spacing: 0.06em;\
+  opacity: 0.9;\
+\}\
+\
+.year-balance-value \{\
+  font-size: 28px;\
+  font-weight: 700;\
+  margin-top: 6px;\
+\}\
+\
+.year-balance-note \{\
+  font-size: 11px;\
+  margin-top: 6px;\
+  opacity: 0.9;\
+\}\
+\
+/* Current month summary */\
+.current-month-summary \{\
+  background: #ffffff;\
+  border-radius: 16px;\
+  border: 1px solid #e5e7eb;\
+  padding: 10px 12px 12px;\
+\}\
+\
+.current-month-header \{\
+  font-size: 13px;\
+  color: #1a1a1a;\
+  margin-bottom: 8px;\
+\}\
+\
+.current-month-header span \{\
+  font-weight: 600;\
+  color: #1a1a1a;\
+\}\
+\
+.current-month-cards \{\
+  display: grid;\
+  grid-template-columns: repeat(2, minmax(0, 1fr));\
+  gap: 8px;\
+\}\
+\
+/* Small pill cards for income / expenses */\
+.summary-pill \{\
+  border-radius: 14px;\
+  padding: 10px 12px;\
+  background: #f9fafb;\
+\}\
+\
+.income-pill \{\
+  background: rgba(183, 212, 48, 0.7);\
+\}\
+\
+.expense-pill \{\
+   background: rgba(239, 83, 80, 0.7);\
+\}\
+\
+.pill-label \{\
+  font-size: 14px;\
+  text-transform: uppercase;\
+  letter-spacing: 0.08em;\
+  color: #1a1a1a;\
+\}\
+\
+.pill-value \{\
+  font-size: 30px;\
+  font-weight: 600;\
+  margin-top: 4px;\
+\}\
+.pill-icon \{\
+  width: 34px;\
+  height: 34px;\
+  border-radius: 50%;\
+  background: rgba(255, 255, 255, 0.9);\
+  display: flex;\
+  align-items: center;\
+  justify-content: center;\
+  font-size: 18px;\
+  flex-shrink: 0;\
+\}\
+.pill-header \{\
+  display: flex;\
+  align-items: center;\
+  gap: 8px;\
+  margin-bottom: 4px;\
+\}\
+/* 3\'d74 month grid */\
+.year-grid \{\
+  display: grid;\
+  grid-template-columns: repeat(3, minmax(0, 1fr));\
+  gap: 10px;\
+  margin-top: 10px;\
+\}\
+\
+.month-card \{\
+  padding: 10px 9px;\
+  border-radius: 14px;\
+  background: #ffffff;\
+  border: 1px solid #e5e7eb;\
+\}\
+\
+.month-name \{\
+  font-size: 12px;\
+  font-weight: 500;\
+  color: #4b5563;\
+  margin-bottom: 2px;\
+\}\
+\
+.month-saving \{\
+  font-size: 15px;\
+  font-weight: 600;\
+\}\
+\
+.month-note \{\
+  font-size: 10px;\
+  color: #9ca3af;\
+  margin-top: 2px;\
+\}\
+\
+/* Make sure 3\'d74 still works on small screens */\
+@media (max-width: 380px) \{\
+  .year-grid \{\
+    grid-template-columns: repeat(2, minmax(0, 1fr));\
+  \}\
+\}\
+}
