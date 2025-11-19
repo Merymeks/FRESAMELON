@@ -76,6 +76,9 @@
       cursor: pointer;
       color: #555;
       transition: 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .tab-btn:hover {
@@ -388,7 +391,6 @@
       margin-left: 6px;
     }
 
-    /* Estados especiales para el balance anual (tarjeta ahorro total) */
     .total-saving-card.positive {
       background: linear-gradient(135deg, #ecfdf3, #dcfce7);
       border-color: #86efac;
@@ -399,7 +401,6 @@
       border-color: #fecaca;
     }
 
-    /* Savings chart */
     #savings-chart svg {
       width: 100%;
       max-width: 100%;
@@ -416,101 +417,126 @@
       font-size: 13px;
       color: #666;
     }
+
+    /* header con icono redondo */
+    .app-header-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .app-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: white;
+      border: 2px solid #eee;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    }
   </style>
-<link rel="stylesheet" href="styles.css">
+
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="app">
     <header class="app-header">
-  <div class="app-header-row">
-    <img src="icons/icon-192.png" class="app-icon" alt="logo">
-    <div>
-      <div class="app-title">FRESAMELON 2026</div>
-      <div class="app-subtitle">VAMOS EQUIPO!💪🏼</div>
-    </div>
-  </div>
-</header>
-
-    <nav class="tabs tabs-icons">
-  <button class="tab-btn active" data-view="year-view">
-    <span class="tab-icon-circle">📅</span>
-    <span class="tab-text">2026</span>
-  </button>
-
-  <button class="tab-btn" data-view="ingresos-view">
-    <span class="tab-icon-circle">💰</span>
-    <span class="tab-text">Ingresos</span>
-  </button>
-
-  <button class="tab-btn" data-view="facturas-view">
-    <span class="tab-icon-circle">📄</span>
-    <span class="tab-text">Facturas</span>
-  </button>
-
-  <button class="tab-btn" data-view="gastos-view">
-    <span class="tab-icon-circle">💸</span>
-    <span class="tab-text">Gastos</span>
-  </button>
-
-  <button class="tab-btn" data-view="presupuesto-view">
-    <span class="tab-icon-circle">🎯</span>
-    <span class="tab-text">Presupuesto</span>
-  </button>
-
-  <button class="tab-btn" data-view="overview-view">
-    <span class="tab-icon-circle">📊</span>
-    <span class="tab-text">Overview</span>
-  </button>
-
-  <button class="tab-btn" data-view="savings-view">
-    <span class="tab-icon-circle">💎</span>
-    <span class="tab-text">Ahorro</span>
-  </button>
-</nav>
-
-
-<!-- 2026 year view -->
-<section id="year-view" class="view active">
-  <div class="year-hero">
-    
-<!-- WRAPPER BLANCO que engloba todo el balance -->
-<div class="year-balance-wrapper">
-  <div class="year-balance-card" id="total-saving-card">
-    <div class="year-balance-top">
-      <div class="year-balance-icon">⚖️</div>
-      <div class="year-balance-label">BALANCE TOTAL 2026</div>
-    </div>
-    <div class="year-balance-value" id="total-saving-value">0.00 €</div>
-  </div>
-</div>
-    <!-- Current month summary (income + expenses) -->
-    <div class="current-month-summary">
-      <div class="current-month-header">
-        Mes actual: <span id="current-month-label">ENERO</span> 2026
-      </div>
-      <div class="current-month-cards">
-        <!-- INGRESOS -->
-        <div class="summary-pill income-pill">
-          <div class="pill-header">
-            <div class="pill-icon">💰</div>
-            <div class="pill-label">INGRESOS MES</div>
-          </div>
-          <div class="pill-value" id="current-income-value">0.00 €</div>
-        </div>
-
-        <!-- GASTOS -->
-        <div class="summary-pill expense-pill">
-          <div class="pill-header">
-            <div class="pill-icon">💸</div>
-            <div class="pill-label">GASTOS MES</div>
-          </div>
-          <div class="pill-value" id="current-expense-value">0.00 €</div>
+      <div class="app-header-row">
+        <img src="icons/icon-192.png" class="app-icon" alt="logo">
+        <div>
+          <div class="app-title">FRESAMELON 2026</div>
+          <div class="app-subtitle">VAMOS EQUIPO!💪🏼</div>
         </div>
       </div>
-    </div>
+    </header>
+
+    <nav class="tabs">
+      <button class="tab-btn active" data-view="year-view">
+        📅 <span>2026</span>
+      </button>
+      <button class="tab-btn" data-view="ingresos-view">
+        💰 <span>Ingresos</span>
+      </button>
+      <button class="tab-btn" data-view="facturas-view">
+        📄 <span>Facturas</span>
+      </button>
+      <button class="tab-btn" data-view="gastos-view">
+        💸 <span>Gastos</span>
+      </button>
+      <button class="tab-btn" data-view="presupuesto-view">
+        🎯 <span>Presupuesto</span>
+      </button>
+      <button class="tab-btn" data-view="overview-view">
+        📊 <span>Overview</span>
+      </button>
+      <button class="tab-btn" data-view="savings-view">
+        💎 <span>Ahorro</span>
+      </button>
+    </nav>
+
+    <!-- 2026 year view -->
+    <section id="year-view" class="view active">
+      <div class="year-hero">
+        <!-- SOLO la tarjeta amarilla (sin wrapper blanco) -->
+        <div class="year-balance-card" id="total-saving-card">
+          <div class="year-balance-top">
+            <div class="year-balance-icon">⚖️</div>
+            <div class="year-balance-label">BALANCE TOTAL 2026</div>
+          </div>
+          <div class="year-balance-value" id="total-saving-value">0.00 €</div>
+        </div>
+
+        <!-- Resumen mes actual SIN cabecera ni wrapper blanco -->
+        <div class="current-month-summary no-wrapper">
+          <div class="current-month-cards">
+            <!-- INGRESOS -->
+            <div class="summary-pill income-pill">
+              <div class="pill-header">
+                <div class="pill-icon">💰</div>
+                <div class="pill-label">INGRESOS MES</div>
+              </div>
+              <div class="pill-value" id="current-income-value">0.00 €</div>
+            </div>
+
+            <!-- GASTOS -->
+            <div class="summary-pill expense-pill">
+              <div class="pill-header">
+                <div class="pill-icon">💸</div>
+                <div class="pill-label">GASTOS MES</div>
+              </div>
+              <div class="pill-value" id="current-expense-value">0.00 €</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3×4 grid of months -->
+      <div class="year-grid" id="year-grid">
+        <!-- Filled by JS -->
+      </div>
+    </section>
+
+    <!-- (el resto de secciones INGRESOS / FACTURAS / GASTOS / PRESUPUESTO / OVERVIEW / SAVINGS se queda igual que ya lo tenías) -->
+    <!-- ... TODO EL RESTO DE TU HTML SIN CAMBIOS ... -->
+    <!-- (lo he omitido aquí solo para no hacer un muro de texto, pero puedes pegar tu mismo código a partir de <section id="ingresos-view"...> tal cual lo tenías) -->
+
+    <!-- Tu JS completo sigue igual, no hay que tocar nada -->
+    <script>
+      /* TODO: aquí va exactamente el mismo JS que ya tienes, sin cambios */
+    </script>
+
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker
+            .register('service-worker.js')
+            .catch(function (err) {
+              console.log('Service worker registration failed:', err);
+            });
+        });
+      }
+    </script>
   </div>
-
-
 
   <!-- 3×4 grid of months -->
   <div class="year-grid" id="year-grid">
