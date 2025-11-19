@@ -3,24 +3,30 @@
 .year-hero {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
-/* Big annual balance card */
-.year-balance-wrapper {
-  background: #ffffff;
-  border-radius: 16px;
-  border: 1px solid #e5e7eb;
-  padding: 16px;
-  margin-bottom: 1px;
-}
-
+/* Big annual balance card – sin wrapper blanco */
 .year-balance-card {
   padding: 18px 20px;
-  border-radius: 18px;
-  background: rgba(255, 241, 118, 0.7); /* amarillo 70% */
-  border: none; /* SIN borde */
+  border-radius: 26px;
+  background: rgba(255, 241, 118, 0.9); /* #fff176 más intenso */
+  border: none;
   color: #1f2933;
+}
+
+/* Sombras tipo app fintech */
+.year-balance-card,
+.summary-pill {
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Etiqueta + icono */
+.year-balance-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
 .year-balance-label {
@@ -31,25 +37,61 @@
 }
 
 .year-balance-value {
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 700;
-  margin-top: 6px;
 }
 
-.year-balance-note {
-  font-size: 11px;
-  margin-top: 6px;
-  opacity: 0.9;
+/* Círculo icono balanza */
+.year-balance-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
 }
-.year-balance-top {
+
+/* Current month summary – sin fondo blanco envolviendo */
+.current-month-summary {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin-top: 4px;
+}
+
+/* Grid de las dos tarjetas */
+.current-month-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+/* Tarjetas pequeñas ingresos / gastos */
+.summary-pill {
+  border-radius: 20px;
+  padding: 12px 14px;
+  border: none;
+}
+
+.income-pill {
+  background: rgba(183, 212, 48, 0.85);
+}
+
+.expense-pill {
+  background: rgba(239, 83, 80, 0.85);
+}
+
+.pill-header {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
-/* Círculo igual que los iconos de ingresos/gastos */
-.year-balance-icon {
+.pill-icon {
   width: 34px;
   height: 34px;
   border-radius: 50%;
@@ -59,47 +101,6 @@
   justify-content: center;
   font-size: 18px;
   flex-shrink: 0;
-}
-
-/* Current month summary */
-.current-month-summary {
-  background: #ffffff;
-  border-radius: 16px;
-  border: 1px solid #e5e7eb;
-  padding: 10px 12px 12px;
-}
-
-.current-month-header {
-  font-size: 13px;
-  color: #1a1a1a;
-  margin-bottom: 8px;
-}
-
-.current-month-header span {
-  font-weight: 200;
-  color: #1a1a1a;
-}
-
-.current-month-cards {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-}
-
-
-/* Small pill cards for income / expenses */
-.summary-pill {
-  border-radius: 14px;
-  padding: 10px 12px;
-  background: #f9fafb;
-}
-
-.income-pill {
-  background: rgba(183, 212, 48, 0.7);
-}
-
-.expense-pill {
-   background: rgba(239, 83, 80, 0.7);
 }
 
 .pill-label {
@@ -112,31 +113,14 @@
 .pill-value {
   font-size: 30px;
   font-weight: 600;
-  margin-top: 4px;
 }
-.pill-icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  flex-shrink: 0;
-}
-.pill-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 4px;
-}
+
 /* 3×4 month grid */
 .year-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 14px;
 }
 
 .month-card {
@@ -164,27 +148,9 @@
   margin-top: 2px;
 }
 
-/* Make sure 3×4 still works on small screens */
+/* Responsive: 2 columnas en móviles muy pequeños */
 @media (max-width: 380px) {
   .year-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-}
-
-.app-header-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.app-icon {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  object-fit: cover;
-  background: white;
-  border: 2px solid #eee;
-}
-.app-icon {
-  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
 }
