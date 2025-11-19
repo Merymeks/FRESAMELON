@@ -1,6 +1,6 @@
 const SW_VERSION = 'v3'; // súbelo cada vez que cambies cosas importantes
 const CACHE_NAME = `fresamelon-${SW_VERSION}`;
-
+ 
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
