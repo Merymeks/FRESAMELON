@@ -18,322 +18,7 @@
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="apple-touch-icon" sizes="512x512" href="icons/icon-512.png">
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-
-    body {
-      background: #1a1a1a;
-      color: #222;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .app {
-      background: #f5f5f5;
-      width: 100%;
-      max-width: 1100px;
-      border-radius: 16px;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-      padding: 20px 20px 24px;
-    }
-
-    .app-header {
-      margin-bottom: 8px;
-    }
-
-    .app-header-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .app-icon {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      object-fit: cover;
-      background: white;
-      border: 2px solid #eee;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-    }
-
-    .app-title {
-      font-size: 24px;
-      margin-bottom: 4px;
-    }
-
-    .app-subtitle {
-      font-size: 14px;
-      color: #666;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 8px;
-      margin: 10px 0 4px;
-      flex-wrap: nowrap;
-      justify-content: space-between;
-      border-bottom: none;
-      padding: 6px 0;
-    }
-
-    .tab-btn {
-      border: none;
-      background: transparent;
-      padding: 0;
-      cursor: pointer;
-    }
-
-    .view {
-      display: none;
-      margin-top: 8px;
-    }
-
-    .view.active {
-      display: block;
-    }
-
-    .section-title {
-      font-size: 18px;
-      margin-bottom: 10px;
-    }
-
-    .section-description {
-      font-size: 13px;
-      color: #666;
-      margin-bottom: 10px;
-    }
-
-    .section-subtitle {
-      font-size: 14px;
-      margin-top: 12px;
-      margin-bottom: 6px;
-      color: #333;
-    }
-
-    .grid {
-      display: grid;
-      gap: 12px;
-    }
-
-    @media (min-width: 768px) {
-      .grid-2 {
-        grid-template-columns: 1.1fr 1fr;
-      }
-    }
-
-    .form-row {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-
-    input[type="text"],
-    input[type="number"],
-    input[type="date"],
-    select,
-    textarea {
-      flex: 1;
-      padding: 8px 10px;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      font-size: 14px;
-    }
-
-    textarea {
-      min-height: 60px;
-      resize: vertical;
-    }
-
-    .btn {
-      padding: 8px 14px;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
-      white-space: nowrap;
-      transition: 0.15s ease;
-    }
-
-    .btn-primary {
-      background: #222;
-      color: #fff;
-    }
-
-    .btn-primary:hover {
-      background: #FFF176;
-      color: #222;
-    }
-
-    .btn-ghost {
-      background: transparent;
-      color: #666;
-    }
-
-    .btn-ghost:hover {
-      background: #FFF176;
-    }
-
-    .summary-cards {
-      display: grid;
-      gap: 10px;
-    }
-
-    @media (min-width: 640px) {
-      .summary-cards {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-    }
-
-    .summary-card {
-      background: #fafafa;
-      border-radius: 12px;
-      padding: 10px 12px;
-      border: 1px solid #eee;
-      cursor: default;
-    }
-
-    .summary-card.clickable {
-      cursor: pointer;
-      transition: 0.15s ease;
-    }
-
-    .summary-card.clickable:hover {
-      background: #f0f0f5;
-    }
-
-    .summary-label {
-      font-size: 12px;
-      color: #666;
-      margin-bottom: 4px;
-    }
-
-    .summary-value {
-      font-size: 18px;
-      font-weight: 600;
-    }
-
-    .summary-note {
-      font-size: 11px;
-      color: #888;
-      margin-top: 4px;
-    }
-
-    .summary-value.income {
-      color: #1a7f37;
-    }
-
-    .summary-value.expense {
-      color: #d12f2f;
-    }
-
-    .summary-value.balance {
-      color: #1a4f7f;
-    }
-
-    .table-wrapper {
-      margin-top: 12px;
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-    }
-
-    th, td {
-      padding: 6px 8px;
-      border-bottom: 1px solid #eee;
-      text-align: left;
-      white-space: nowrap;
-    }
-
-    th {
-      background: #fafafa;
-      font-weight: 500;
-    }
-
-    tr:last-child td {
-      border-bottom: none;
-    }
-
-    .small {
-      font-size: 11px;
-      color: #888;
-    }
-
-    .amount-income {
-      color: #1a7f37;
-    }
-
-    .amount-expense {
-      color: #d12f2f;
-    }
-
-    .highlight-positive {
-      color: #1a7f37;
-    }
-
-    .highlight-negative {
-      color: #d12f2f;
-    }
-
-    .highlight-neutral {
-      color: #666;
-    }
-
-    .hint {
-      font-size: 11px;
-      color: #888;
-      margin-bottom: 6px;
-    }
-
-    .month-switch {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-
-    .month-header {
-      font-size: 16px;
-      margin-bottom: 6px;
-    }
-
-    .month-header span {
-      margin-left: 6px;
-      font-size: 13px;
-      color: #666;
-    }
-
-    .badge-year {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-size: 11px;
-      background: #f0f0f5;
-      color: #666;
-      margin-left: 6px;
-    }
-
-    #savings-chart svg {
-      width: 100%;
-      max-width: 100%;
-      height: auto;
-    }
-  </style>
-
-  <!-- estilos adicionales -->
+  <!-- ESTILOS -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -350,25 +35,25 @@
 
     <!-- MENÚ DE ICONOS -->
     <nav class="tabs tabs-icons">
-      <button class="tab-btn active" data-view="year-view">
+      <button class="tab-btn active" data-view="year-view" type="button">
         <span class="tab-icon-circle">🏠</span>
       </button>
-      <button class="tab-btn" data-view="ingresos-view">
+      <button class="tab-btn" data-view="ingresos-view" type="button">
         <span class="tab-icon-circle">💰</span>
       </button>
-      <button class="tab-btn" data-view="facturas-view">
+      <button class="tab-btn" data-view="facturas-view" type="button">
         <span class="tab-icon-circle">📄</span>
       </button>
-      <button class="tab-btn" data-view="gastos-view">
+      <button class="tab-btn" data-view="gastos-view" type="button">
         <span class="tab-icon-circle">💸</span>
       </button>
-      <button class="tab-btn" data-view="presupuesto-view">
+      <button class="tab-btn" data-view="presupuesto-view" type="button">
         <span class="tab-icon-circle">🎯</span>
       </button>
-      <button class="tab-btn" data-view="overview-view">
+      <button class="tab-btn" data-view="overview-view" type="button">
         <span class="tab-icon-circle">📊</span>
       </button>
-      <button class="tab-btn" data-view="savings-view">
+      <button class="tab-btn" data-view="savings-view" type="button">
         <span class="tab-icon-circle">💎</span>
       </button>
     </nav>
@@ -376,7 +61,6 @@
     <!-- HOME / DASHBOARD AÑO 2026 -->
     <section id="year-view" class="view active">
       <div class="year-hero">
-
         <div class="year-balance-wrapper">
           <div class="year-balance-card" id="total-saving-card">
             <div class="year-balance-top">
@@ -387,11 +71,12 @@
           </div>
         </div>
 
-      <div class="current-month-header">
-  <span class="current-month-label">Mes actual:</span>
-  <span id="current-month-name" class="current-month-name"></span>
-  <span class="badge-year">2026</span>
-</div>
+        <div class="current-month-summary">
+          <div class="month-header">
+            Mes actual:
+            <span id="current-month-label" class="month-label-strong"></span>
+            <span class="badge-year">2026</span>
+          </div>
           <div class="current-month-cards">
             <div class="summary-pill income-pill">
               <div class="pill-header">
@@ -421,7 +106,7 @@
           </div>
 
           <button class="toggle-btn open" data-target="year-grid-panel">
-            Resumen anual 2026
+            Resumen 2026
           </button>
           <div id="year-grid-panel" class="toggle-panel open">
             <div class="year-grid" id="year-grid"></div>
@@ -435,12 +120,12 @@
       <div class="section-title">INGRESOS</div>
       <p class="section-description">
         Registra los ingresos de Maria y Alba. Mes seleccionado:
-        <span id="ing-selected-month-label"></span>
+        <span id="ing-selected-month-label" class="month-label-strong"></span>
       </p>
 
       <div class="month-switch">
-        <button class="btn btn-ghost month-prev">&larr; Mes anterior</button>
-        <button class="btn btn-ghost month-next">Mes siguiente &rarr;</button>
+        <button class="btn btn-ghost month-prev" type="button">&larr; Mes anterior</button>
+        <button class="btn btn-ghost month-next" type="button">Mes siguiente &rarr;</button>
       </div>
 
       <div class="grid grid-2">
@@ -475,8 +160,8 @@
           </div>
 
           <div class="form-row">
-            <button class="btn btn-primary" id="ing-add-btn">Añadir ingreso</button>
-            <button class="btn btn-ghost" id="ing-clear-btn">Limpiar</button>
+            <button class="btn btn-primary" id="ing-add-btn" type="button">Añadir ingreso</button>
+            <button class="btn btn-ghost" id="ing-clear-btn" type="button">Limpiar</button>
           </div>
         </div>
 
@@ -506,12 +191,12 @@
       <div class="section-title">FACTURAS</div>
       <p class="section-description">
         Registra las facturas fijas de casa. Mes seleccionado:
-        <span id="fac-selected-month-label"></span>
+        <span id="fac-selected-month-label" class="month-label-strong"></span>
       </p>
 
       <div class="month-switch">
-        <button class="btn btn-ghost month-prev">&larr; Mes anterior</button>
-        <button class="btn btn-ghost month-next">Mes siguiente &rarr;</button>
+        <button class="btn btn-ghost month-prev" type="button">&larr; Mes anterior</button>
+        <button class="btn btn-ghost month-next" type="button">Mes siguiente &rarr;</button>
       </div>
 
       <div class="grid grid-2">
@@ -549,12 +234,12 @@
           </div>
 
           <div class="form-row">
-            <button class="btn btn-primary" id="fac-add-btn">Añadir factura</button>
-            <button class="btn btn-ghost" id="fac-clear-btn">Limpiar</button>
+            <button class="btn btn-primary" id="fac-add-btn" type="button">Añadir factura</button>
+            <button class="btn btn-ghost" id="fac-clear-btn" type="button">Limpiar</button>
           </div>
 
           <div class="form-row">
-            <button class="btn btn-ghost" id="fac-duplicate-btn">
+            <button class="btn btn-ghost" id="fac-duplicate-btn" type="button">
               Duplicar facturas mes anterior
             </button>
           </div>
@@ -586,12 +271,12 @@
       <div class="section-title">GASTOS</div>
       <p class="section-description">
         Registra los gastos variables. Mes seleccionado:
-        <span id="gas-selected-month-label"></span>
+        <span id="gas-selected-month-label" class="month-label-strong"></span>
       </p>
 
       <div class="month-switch">
-        <button class="btn btn-ghost month-prev">&larr; Mes anterior</button>
-        <button class="btn btn-ghost month-next">Mes siguiente &rarr;</button>
+        <button class="btn btn-ghost month-prev" type="button">&larr; Mes anterior</button>
+        <button class="btn btn-ghost month-next" type="button">Mes siguiente &rarr;</button>
       </div>
 
       <div class="grid grid-2">
@@ -632,8 +317,8 @@
           </div>
 
           <div class="form-row">
-            <button class="btn btn-primary" id="gas-add-btn">Añadir gasto</button>
-            <button class="btn btn-ghost" id="gas-clear-btn">Limpiar</button>
+            <button class="btn btn-primary" id="gas-add-btn" type="button">Añadir gasto</button>
+            <button class="btn btn-ghost" id="gas-clear-btn" type="button">Limpiar</button>
           </div>
         </div>
 
@@ -689,7 +374,7 @@
           </div>
 
           <div class="form-row">
-            <button class="btn btn-primary" id="pre-fac-save-btn">Guardar presupuesto factura</button>
+            <button class="btn btn-primary" id="pre-fac-save-btn" type="button">Guardar presupuesto factura</button>
           </div>
 
           <div class="section-subtitle">Presupuesto Gastos</div>
@@ -717,7 +402,7 @@
           </div>
 
           <div class="form-row">
-            <button class="btn btn-primary" id="pre-gas-save-btn">Guardar presupuesto gasto</button>
+            <button class="btn btn-primary" id="pre-gas-save-btn" type="button">Guardar presupuesto gasto</button>
           </div>
         </div>
 
@@ -761,12 +446,13 @@
       </p>
 
       <div class="month-switch">
-        <button class="btn btn-ghost month-prev">&larr; Mes anterior</button>
-        <button class="btn btn-ghost month-next">Mes siguiente &rarr;</button>
+        <button class="btn btn-ghost month-prev" type="button">&larr; Mes anterior</button>
+        <button class="btn btn-ghost month-next" type="button">Mes siguiente &rarr;</button>
       </div>
 
       <div class="month-header">
-        Mes: <span id="overview-month-label"></span>
+        Mes:
+        <span id="overview-month-label" class="month-label-strong"></span>
         <span class="badge-year">2026</span>
       </div>
 
@@ -783,7 +469,7 @@
         Gráfico y tabla del ahorro mensual a lo largo de 2026. Se irá rellenando conforme avance el año.
       </p>
 
-      <div class="section-subtitle">RESUMEN ANUAL</div> 
+      <div class="section-subtitle">RESUMEN ANUAL</div>
       <div class="summary-cards" id="year-summary-cards"></div>
 
       <div class="section-subtitle" style="margin-top: 14px;">Gráfico ahorro mensual</div>
