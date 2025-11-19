@@ -28,11 +28,15 @@ function saveToStorage(key, value) {
 let transactions = loadFromStorage(STORAGE_TRANSACTIONS, []);
 let budgets = loadFromStorage(STORAGE_BUDGETS, { facturas: {}, gastos: {} });
 
+// aseguramos estructura mínima
 if (!budgets.facturas || !budgets.gastos) {
   budgets = {
     facturas: budgets.facturas || {},
-    gastos: budgets.gastos || {}
+    gastos: budgets.gastos || {},
+    savingsGoal: budgets.savingsGoal || 0
   };
+} else if (typeof budgets.savingsGoal === "undefined") {
+  budgets.savingsGoal = 0;
 }
 
 let selectedYear = TARGET_YEAR;
@@ -74,7 +78,7 @@ function showView(viewId) {
       renderPresupuestoTables();
       break;
     case "overview-view":
-      renderOverview();
+      if (typeof renderOverview === "function") renderOverview();
       break;
     case "savings-view":
       renderSavingsView();
@@ -270,6 +274,16 @@ function computeYearTotals() {
   return { totalIncome, totalExpenses, totalBalance };
 }
 
+// objetivo de ahorro anual (guardado en budgets)
+function getSavingsGoal() {
+  return Number(budgets.savingsGoal) || 0;
+}
+
+function setSavingsGoal(newGoal) {
+  budgets.savingsGoal = newGoal;
+  saveToStorage(STORAGE_BUDGETS, budgets);
+}
+
 // === Dashboard año (HOME) ===
 function renderYearDashboard() {
   const grid = document.getElementById("year-grid");
@@ -291,11 +305,6 @@ function renderYearDashboard() {
 
     const card = document.createElement("div");
     card.className = "month-card";
-    card.addEventListener("click", () => {
-      selectedYear = TARGET_YEAR;
-      selectedMonth = m;
-      showView("overview-view");
-    });
 
     const nameEl = document.createElement("div");
     nameEl.className = "month-name";
@@ -308,19 +317,8 @@ function renderYearDashboard() {
     else savingEl.classList.add("zero");
     savingEl.textContent = formatMoney(bal) + " €";
 
-    const noteEl = document.createElement("div");
-    noteEl.className = "month-note";
-    if (bal === 0) {
-      noteEl.textContent = "Sin datos o ahorro 0 €";
-    } else if (bal > 0) {
-      noteEl.textContent = "Mes en positivo";
-    } else {
-      noteEl.textContent = "Mes en negativo";
-    }
-
     card.appendChild(nameEl);
     card.appendChild(savingEl);
-    card.appendChild(noteEl);
     grid.appendChild(card);
   }
 
@@ -355,52 +353,125 @@ function renderSavingsView() {
   if (!chartContainer || !tableBody || !summaryContainer) return;
 
   const { totalIncome, totalExpenses, totalBalance } = computeYearTotals();
-  summaryContainer.innerHTML = "";
+  const savingsGoal = getSavingsGoal();
+  const ahorroAcumulado = totalBalance; // lo que llevas ahorrado en 2026
 
-  const cardsData = [
-    {
-      label: "Ingreso total 2026",
-      value: totalIncome,
-      className: "income"
-    },
-    {
-      label: "Gastos totales 2026",
-      value: totalExpenses,
-      className: "expense"
-    },
-    {
-      label: "Balance total 2026",
-      value: totalBalance,
-      className: "balance",
-      note: totalBalance >= 0 ? "Año en positivo." : "Año en negativo."
+  const pct = savingsGoal > 0
+    ? Math.max(0, Math.min(100, (ahorroAcumulado / savingsGoal) * 100))
+    : 0;
+
+  // Tarjetas + tarjeta objetivo + balance, todo con estética dashboard
+  summaryContainer.innerHTML = `
+    <div class="current-month-cards annual-cards">
+      <div class="summary-pill income-pill">
+        <div class="pill-header">
+          <div class="pill-icon">💰</div>
+          <div class="pill-label">TOTAL INGRESOS 2026</div>
+        </div>
+        <div class="pill-value" id="year-income-value"></div>
+      </div>
+
+      <div class="summary-pill expense-pill">
+        <div class="pill-header">
+          <div class="pill-icon">💸</div>
+          <div class="pill-label">TOTAL GASTOS 2026</div>
+        </div>
+        <div class="pill-value" id="year-expense-value"></div>
+      </div>
+    </div>
+
+    <div class="year-balance-wrapper" style="margin-top: 12px;">
+      <div class="year-balance-card" id="year-balance-card">
+        <div class="year-balance-top">
+          <div class="year-balance-icon">⚖️</div>
+          <div class="year-balance-label">BALANCE TOTAL 2026</div>
+        </div>
+        <div class="year-balance-value" id="year-balance-value"></div>
+      </div>
+    </div>
+
+    <div class="savings-goal-card" id="savings-goal-card">
+      <div class="savings-goal-header">
+        <div class="savings-goal-title">OBJETIVO DE AHORRO 2026</div>
+        <div class="savings-goal-target" id="savings-goal-target"></div>
+      </div>
+      <div class="savings-goal-bar-wrapper">
+        <div class="savings-goal-bar-bg">
+          <div class="savings-goal-bar-fill" id="savings-goal-fill" style="width:0%;"></div>
+        </div>
+        <div class="savings-goal-meta">
+          <div class="savings-goal-progress" id="savings-goal-progress"></div>
+          <div class="savings-goal-current" id="savings-goal-current"></div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Rellenar valores de las tarjetas
+  const incomeValEl = document.getElementById("year-income-value");
+  const expenseValEl = document.getElementById("year-expense-value");
+  const balanceValEl = document.getElementById("year-balance-value");
+  const balanceCardEl = document.getElementById("year-balance-card");
+
+  if (incomeValEl) incomeValEl.textContent = formatMoney(totalIncome) + " €";
+  if (expenseValEl) expenseValEl.textContent = formatMoney(totalExpenses) + " €";
+  if (balanceValEl) balanceValEl.textContent = formatMoney(totalBalance) + " €";
+
+  if (balanceCardEl) {
+    // color soft según signo (solo efecto visual, no cambiamos layout)
+    if (totalBalance > 0) {
+      balanceCardEl.style.background = "var(--pastel-green)";
+    } else if (totalBalance < 0) {
+      balanceCardEl.style.background = "var(--pastel-red)";
+    } else {
+      balanceCardEl.style.background = "var(--pastel-yellow)";
     }
-  ];
+  }
 
-  cardsData.forEach((c) => {
-    const card = document.createElement("div");
-    card.className = "summary-card";
+  // Rellenar objetivo de ahorro
+  const goalTargetEl = document.getElementById("savings-goal-target");
+  const goalFillEl = document.getElementById("savings-goal-fill");
+  const goalProgressEl = document.getElementById("savings-goal-progress");
+  const goalCurrentEl = document.getElementById("savings-goal-current");
 
-    const labelEl = document.createElement("div");
-    labelEl.className = "summary-label";
-    labelEl.textContent = c.label;
+  if (goalTargetEl) {
+    goalTargetEl.textContent =
+      savingsGoal > 0 ? formatMoney(savingsGoal) + " €" : "Sin objetivo definido";
+  }
+  if (goalFillEl) {
+    goalFillEl.style.width = pct + "%";
+  }
+  if (goalProgressEl) {
+    goalProgressEl.textContent =
+      savingsGoal > 0
+        ? `${pct.toFixed(0)}% del objetivo alcanzado`
+        : "Marca un objetivo para ver el porcentaje.";
+  }
+  if (goalCurrentEl) {
+    goalCurrentEl.textContent = `Ahorro acumulado: ${formatMoney(ahorroAcumulado)} €`;
+  }
 
-    const valueEl = document.createElement("div");
-    valueEl.className = "summary-value " + c.className;
-    valueEl.textContent = formatMoney(c.value) + " €";
+  // Permitir cambiar rápidamente el objetivo haciendo click en la tarjeta
+  const goalCardEl = document.getElementById("savings-goal-card");
+  if (goalCardEl) {
+    goalCardEl.addEventListener("click", () => {
+      const currentGoal = getSavingsGoal();
+      const input = prompt(
+        "Introduce tu objetivo de ahorro para 2026 (€):",
+        currentGoal > 0 ? currentGoal : ""
+      );
+      if (input === null) return;
+      const parsed = Number(String(input).replace(",", "."));
+      if (!parsed || parsed <= 0) {
+        alert("Introduce un importe válido mayor que 0.");
+        return;
+      }
+      setSavingsGoal(parsed);
+      renderSavingsView(); // refresca barra y textos
+    });
+  }
 
-    card.appendChild(labelEl);
-    card.appendChild(valueEl);
-
-    if (c.note) {
-      const noteEl = document.createElement("div");
-      noteEl.className = "summary-note";
-      noteEl.textContent = c.note;
-      card.appendChild(noteEl);
-    }
-
-    summaryContainer.appendChild(card);
-  });
-
+  // ------ Gráfico línea ahorro mensual ------
   const maxVal = Math.max(...data, 0);
   const minVal = Math.min(...data, 0);
   const range = maxVal - minVal || 1;
@@ -439,6 +510,7 @@ function renderSavingsView() {
     </svg>
   `;
 
+  // ------ Tabla detalle por mes ------
   tableBody.innerHTML = "";
   let acumulado = 0;
   data.forEach((val, i) => {
@@ -512,7 +584,7 @@ function addTransaction({
   saveToStorage(STORAGE_TRANSACTIONS, transactions);
 
   renderYearDashboard();
-  renderOverview();
+  if (typeof renderOverview === "function") renderOverview();
   return true;
 }
 
@@ -521,7 +593,7 @@ function deleteTransaction(id) {
   transactions = transactions.filter((tx) => tx.id !== id);
   saveToStorage(STORAGE_TRANSACTIONS, transactions);
   renderYearDashboard();
-  renderOverview();
+  if (typeof renderOverview === "function") renderOverview();
   renderIngresosTable();
   renderFacturasTable();
   renderGastosTable();
@@ -554,7 +626,7 @@ function changeMonth(delta) {
 
   switch (activeView.id) {
     case "overview-view":
-      renderOverview();
+      if (typeof renderOverview === "function") renderOverview();
       break;
     case "ingresos-view":
       renderIngresosTable();
@@ -839,7 +911,7 @@ function duplicateLastMonthFacturas() {
   saveToStorage(STORAGE_TRANSACTIONS, transactions);
 
   renderYearDashboard();
-  renderOverview();
+  if (typeof renderOverview === "function") renderOverview();
   renderFacturasTable();
 }
 
@@ -1096,20 +1168,90 @@ if (totalSavingCard) {
   });
 }
 
-// === Desplegables dashboard año ===
-const toggleButtons = document.querySelectorAll(".toggle-btn");
+// Segmented control: RESUMEN MES / RESUMEN 2026
+const summaryTabs = document.querySelectorAll(".summary-tab");
+const summaryPanels = {
+  "month-expenses-panel": document.getElementById("month-expenses-panel"),
+  "year-grid-panel": document.getElementById("year-grid-panel")
+};
 
-toggleButtons.forEach((btn) => {
-  const targetId = btn.getAttribute("data-target");
-  const panel = document.getElementById(targetId);
-  if (!panel) return;
+// pastilla amarilla deslizante
+const summarySwitch = document.querySelector(".summary-switch");
+let summaryHighlight = null;
 
-  btn.addEventListener("click", () => {
-    const isOpen = panel.classList.contains("open");
-    panel.classList.toggle("open", !isOpen);
-    btn.classList.toggle("open", !isOpen);
+if (summarySwitch && summaryTabs.length > 0) {
+  summaryHighlight = document.createElement("div");
+  summaryHighlight.className = "summary-highlight";
+  summarySwitch.prepend(summaryHighlight); // va debajo de los botones
+}
+
+// mueve la highlight bajo el tab activo
+function moveSummaryHighlight(targetTab) {
+  if (!summaryHighlight || !summarySwitch || !targetTab) return;
+  const switchRect = summarySwitch.getBoundingClientRect();
+  const tabRect = targetTab.getBoundingClientRect();
+
+  const leftInside = tabRect.left - switchRect.left;
+
+  summaryHighlight.style.width = tabRect.width + "px";
+  summaryHighlight.style.transform = `translateX(${leftInside}px)`;
+}
+
+// listeners tabs resumen
+summaryTabs.forEach((tab) => {
+  tab.addEventListener("click", () => {
+    const targetId = tab.getAttribute("data-target");
+
+    summaryTabs.forEach((t) => {
+      t.classList.toggle("active", t === tab);
+    });
+
+    Object.entries(summaryPanels).forEach(([id, panel]) => {
+      if (!panel) return;
+      panel.classList.toggle("open", id === targetId);
+    });
+
+    moveSummaryHighlight(tab);
   });
 });
+
+// === Toggle DETALLE POR MES en AHORRO ===
+const savingsDetailToggle = document.querySelector(".savings-detail-toggle");
+const savingsDetailPanel = document.getElementById("savings-detail-panel");
+
+if (savingsDetailToggle && savingsDetailPanel) {
+  savingsDetailToggle.addEventListener("click", () => {
+    const isOpen = savingsDetailPanel.classList.toggle("open");
+    savingsDetailToggle.classList.toggle("open", isOpen);
+  });
+}
+
+// === Info overlay EVOLUCIÓN ===
+const evolutionInfoBtn = document.querySelector("#savings-view .info-icon-btn");
+const evolutionInfoOverlay = document.getElementById("evolution-info-overlay");
+const evolutionInfoClose = document.querySelector(
+  "#evolution-info-overlay .btn-close-info"
+);
+
+if (evolutionInfoBtn && evolutionInfoOverlay) {
+  evolutionInfoBtn.addEventListener("click", () => {
+    evolutionInfoOverlay.classList.add("open");
+  });
+}
+
+if (evolutionInfoClose && evolutionInfoOverlay) {
+  evolutionInfoClose.addEventListener("click", () => {
+    evolutionInfoOverlay.classList.remove("open");
+  });
+}
+
+if (evolutionInfoOverlay) {
+  evolutionInfoOverlay.addEventListener("click", (e) => {
+    if (e.target === evolutionInfoOverlay) {
+      evolutionInfoOverlay.classList.remove("open");
+    }
+  });
+}
 
 // === Init ===
 function init() {
@@ -1127,35 +1269,20 @@ function init() {
 
   renderYearDashboard();
   renderPresupuestoTables();
-  renderOverview();
-  updateMonthLabels();
-}
-
-init();
-function init() {
-  const anyDate = new Date(TARGET_YEAR, selectedMonth, 1)
-    .toISOString()
-    .slice(0, 10);
-
-  if (ingDate) ingDate.value = anyDate;
-  if (facDate) facDate.value = anyDate;
-  if (gasDate) gasDate.value = anyDate;
-
-  resetIngresosForm();
-  resetFacturasForm();
-  resetGastosForm();
-
-  renderYearDashboard();
-  renderPresupuestoTables();
+  if (typeof renderOverview === "function") renderOverview();
   updateMonthLabels();
 
-  // Cerrar por defecto el Resumen 2026
-  const resumenBtn = document.querySelector('button[data-target="year-grid-panel"]');
-  const resumenPanel = document.getElementById('year-grid-panel');
+  // panel por defecto: resumen mes abierto, resumen 2026 cerrado
+  const monthPanel = document.getElementById("month-expenses-panel");
+  const yearPanel = document.getElementById("year-grid-panel");
+  if (monthPanel) monthPanel.classList.add("open");
+  if (yearPanel) yearPanel.classList.remove("open");
 
-  if (resumenBtn && resumenPanel) {
-    resumenBtn.classList.remove('open');
-    resumenPanel.classList.remove('open');
+  // colocar la pastilla amarilla debajo de la pestaña activa
+  const activeTab = document.querySelector(".summary-tab.active");
+  if (activeTab) {
+    setTimeout(() => moveSummaryHighlight(activeTab), 0);
   }
 }
 
+init();
