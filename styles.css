@@ -7,16 +7,24 @@
 }
 
 /* Big annual balance card */
+.year-balance-wrapper {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  padding: 16px;
+  margin-bottom: 1px;
+}
+
 .year-balance-card {
-  padding: 14px 16px;
+  padding: 18px 20px;
   border-radius: 18px;
-  background: rgba(255, 241, 118, 0.);
-  border: none;
+  background: rgba(255, 241, 118, 0.7); /* amarillo 70% */
+  border: none; /* SIN borde */
   color: #1f2933;
 }
 
 .year-balance-label {
-  font-size: 13px;
+  font-size: 16px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   opacity: 0.9;
@@ -32,6 +40,25 @@
   font-size: 11px;
   margin-top: 6px;
   opacity: 0.9;
+}
+.year-balance-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+/* Círculo igual que los iconos de ingresos/gastos */
+.year-balance-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
 }
 
 /* Current month summary */
@@ -49,7 +76,7 @@
 }
 
 .current-month-header span {
-  font-weight: 600;
+  font-weight: 200;
   color: #1a1a1a;
 }
 
@@ -58,6 +85,7 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
 }
+
 
 /* Small pill cards for income / expenses */
 .summary-pill {
@@ -143,3 +171,20 @@
   }
 }
 
+.app-header-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: white;
+  border: 2px solid #eee;
+}
+.app-icon {
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
