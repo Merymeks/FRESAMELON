@@ -1,4 +1,3 @@
-// Constantes
 const STORAGE_TRANSACTIONS = "homeBudget_transactions_v3";
 const STORAGE_BUDGETS = "homeBudget_budgets_v3";
 const TARGET_YEAR = 2026;
@@ -1212,3 +1211,5 @@ function init() {
   renderOverview();
   updateMonthLabels();
 }
+
+init();
