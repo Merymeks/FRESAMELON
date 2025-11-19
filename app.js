@@ -1,3 +1,4 @@
+// === Constantes ===
 const STORAGE_TRANSACTIONS = "homeBudget_transactions_v3";
 const STORAGE_BUDGETS = "homeBudget_budgets_v3";
 const TARGET_YEAR = 2026;
@@ -8,7 +9,7 @@ const MONTH_NAMES = [
   "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"
 ];
 
-// Helpers de storage
+// === Helpers Storage ===
 function loadFromStorage(key, defaultValue) {
   const raw = localStorage.getItem(key);
   if (!raw) return defaultValue;
@@ -23,7 +24,7 @@ function saveToStorage(key, value) {
   localStorage.setItem(key, JSON.stringify(value));
 }
 
-// Estado
+// === Estado global ===
 let transactions = loadFromStorage(STORAGE_TRANSACTIONS, []);
 let budgets = loadFromStorage(STORAGE_BUDGETS, { facturas: {}, gastos: {} });
 
@@ -39,7 +40,7 @@ const today = new Date();
 let selectedMonth =
   today.getFullYear() === TARGET_YEAR ? today.getMonth() : 0;
 
-// Tabs
+// === Tabs / Vistas ===
 const tabButtons = document.querySelectorAll(".tab-btn");
 const views = document.querySelectorAll(".view");
 
@@ -53,23 +54,31 @@ function showView(viewId) {
     btn.classList.toggle("active", target === viewId);
   });
 
-  if (viewId === "year-view") {
-    renderYearDashboard();
-  } else if (viewId === "ingresos-view") {
-    renderIngresosTable();
-    updateMonthLabels();
-  } else if (viewId === "facturas-view") {
-    renderFacturasTable();
-    updateMonthLabels();
-  } else if (viewId === "gastos-view") {
-    renderGastosTable();
-    updateMonthLabels();
-  } else if (viewId === "presupuesto-view") {
-    renderPresupuestoTables();
-  } else if (viewId === "overview-view") {
-    renderOverview();
-  } else if (viewId === "savings-view") {
-    renderSavingsView();
+  switch (viewId) {
+    case "year-view":
+      renderYearDashboard();
+      break;
+    case "ingresos-view":
+      renderIngresosTable();
+      updateMonthLabels();
+      break;
+    case "facturas-view":
+      renderFacturasTable();
+      updateMonthLabels();
+      break;
+    case "gastos-view":
+      renderGastosTable();
+      updateMonthLabels();
+      break;
+    case "presupuesto-view":
+      renderPresupuestoTables();
+      break;
+    case "overview-view":
+      renderOverview();
+      break;
+    case "savings-view":
+      renderSavingsView();
+      break;
   }
 }
 
@@ -80,7 +89,7 @@ tabButtons.forEach((btn) => {
   });
 });
 
-// Helpers generales
+// === Helpers generales ===
 function formatMoney(value) {
   const num = Number(value) || 0;
   return num.toFixed(2);
@@ -139,7 +148,7 @@ function computeMonthExpensesByCategory(year, monthIndex) {
   return map;
 }
 
-// Donut chart gastos mes
+// === Donut chart gastos mes ===
 function renderMonthExpensesPie() {
   const container = document.getElementById("month-pie-chart");
   const legend = document.getElementById("month-expenses-legend");
@@ -233,6 +242,7 @@ function renderMonthExpensesPie() {
   });
 }
 
+// === Ahorro anual ===
 function computeYearSavings() {
   const balances = [];
   for (let m = 0; m < 12; m++) {
@@ -260,7 +270,7 @@ function computeYearTotals() {
   return { totalIncome, totalExpenses, totalBalance };
 }
 
-// Dashboard año
+// === Dashboard año (HOME) ===
 function renderYearDashboard() {
   const grid = document.getElementById("year-grid");
   const totalSavingValueEl = document.getElementById("total-saving-value");
@@ -332,11 +342,10 @@ function renderYearDashboard() {
     currentExpenseEl.textContent = formatMoney(totalExpensesCurrent) + " €";
   }
 
-  // Pie chart del mes actual
   renderMonthExpensesPie();
 }
 
-// Ahorro 2026
+// === Vista AHORRO 2026 ===
 function renderSavingsView() {
   const data = computeYearSavings();
   const chartContainer = document.getElementById("savings-chart");
@@ -458,7 +467,7 @@ function renderSavingsView() {
   });
 }
 
-// Añadir / borrar transacción
+// === Añadir / borrar transacción ===
 function addTransaction({
   dateInput,
   categorySelect,
@@ -518,7 +527,7 @@ function deleteTransaction(id) {
   renderGastosTable();
 }
 
-// Labels de mes
+// === Labels de mes ===
 function updateMonthLabels() {
   const label = MONTH_NAMES[selectedMonth] + " 2026";
   const ingLabel = document.getElementById("ing-selected-month-label");
@@ -532,7 +541,7 @@ function updateMonthLabels() {
   if (ovLabel) ovLabel.textContent = MONTH_NAMES[selectedMonth];
 }
 
-// Cambio de mes
+// === Cambio de mes ===
 function changeMonth(delta) {
   selectedMonth += delta;
   if (selectedMonth < 0) selectedMonth = 11;
@@ -575,7 +584,7 @@ monthNextButtons.forEach((btn) =>
   btn.addEventListener("click", () => changeMonth(1))
 );
 
-// INGRESOS
+// === INGRESOS ===
 const ingDate = document.getElementById("ing-date");
 const ingCategory = document.getElementById("ing-category");
 const ingCategoryCustom = document.getElementById("ing-category-custom");
@@ -680,7 +689,7 @@ if (ingClearBtn) {
   ingClearBtn.addEventListener("click", resetIngresosForm);
 }
 
-// FACTURAS
+// === FACTURAS ===
 const facDate = document.getElementById("fac-date");
 const facCategory = document.getElementById("fac-category");
 const facCategoryCustom = document.getElementById("fac-category-custom");
@@ -838,7 +847,7 @@ if (facDuplicateBtn) {
   facDuplicateBtn.addEventListener("click", duplicateLastMonthFacturas);
 }
 
-// GASTOS
+// === GASTOS ===
 const gasDate = document.getElementById("gas-date");
 const gasCategory = document.getElementById("gas-category");
 const gasCategoryCustom = document.getElementById("gas-category-custom");
@@ -943,7 +952,7 @@ if (gasClearBtn) {
   gasClearBtn.addEventListener("click", resetGastosForm);
 }
 
-// PRESUPUESTO
+// === PRESUPUESTO ===
 const preFacCategory = document.getElementById("pre-fac-category");
 const preFacCategoryCustom = document.getElementById("pre-fac-category-custom");
 const preFacAmount = document.getElementById("pre-fac-amount");
@@ -999,6 +1008,7 @@ function deletePresupuesto(type, cat) {
 function renderPresupuestoTables() {
   if (!preFacTableBody || !preGasTableBody) return;
 
+  // Facturas
   preFacTableBody.innerHTML = "";
   const facCats = Object.keys(budgets.facturas);
   if (facCats.length === 0) {
@@ -1034,6 +1044,7 @@ function renderPresupuestoTables() {
     });
   }
 
+  // Gastos
   preGasTableBody.innerHTML = "";
   const gasCats = Object.keys(budgets.gastos);
   if (gasCats.length === 0) {
@@ -1077,7 +1088,7 @@ if (preGasSaveBtn) {
   preGasSaveBtn.addEventListener("click", () => savePresupuesto("gastos"));
 }
 
-// OVERVIEW mensual
+// === OVERVIEW mensual ===
 function renderOverview() {
   updateMonthLabels();
   const cardsContainer = document.getElementById("overview-cards");
@@ -1169,7 +1180,7 @@ function renderOverview() {
   });
 }
 
-// Click en tarjeta de ahorro anual -> vista savings
+// === Click tarjeta BALANCE TOTAL 2026 -> vista ahorro ===
 const totalSavingCard = document.getElementById("total-saving-card");
 if (totalSavingCard) {
   totalSavingCard.addEventListener("click", () => {
@@ -1177,7 +1188,7 @@ if (totalSavingCard) {
   });
 }
 
-// Desplegables dashboard (resumen gastos / resumen anual)
+// === Desplegables dashboard año ===
 const toggleButtons = document.querySelectorAll(".toggle-btn");
 
 toggleButtons.forEach((btn) => {
@@ -1192,7 +1203,7 @@ toggleButtons.forEach((btn) => {
   });
 });
 
-// Init
+// === Init ===
 function init() {
   const anyDate = new Date(TARGET_YEAR, selectedMonth, 1)
     .toISOString()
@@ -1213,3 +1224,31 @@ function init() {
 }
 
 init();
+function init() {
+  const anyDate = new Date(TARGET_YEAR, selectedMonth, 1)
+    .toISOString()
+    .slice(0, 10);
+
+  if (ingDate) ingDate.value = anyDate;
+  if (facDate) facDate.value = anyDate;
+  if (gasDate) gasDate.value = anyDate;
+
+  resetIngresosForm();
+  resetFacturasForm();
+  resetGastosForm();
+
+  renderYearDashboard();
+  renderPresupuestoTables();
+  renderOverview();
+  updateMonthLabels();
+
+  // Cerrar por defecto el Resumen 2026
+  const resumenBtn = document.querySelector('button[data-target="year-grid-panel"]');
+  const resumenPanel = document.getElementById('year-grid-panel');
+
+  if (resumenBtn && resumenPanel) {
+    resumenBtn.classList.remove('open');
+    resumenPanel.classList.remove('open');
+  }
+}
+
