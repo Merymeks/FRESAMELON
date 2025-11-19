@@ -1088,98 +1088,6 @@ if (preGasSaveBtn) {
   preGasSaveBtn.addEventListener("click", () => savePresupuesto("gastos"));
 }
 
-// === OVERVIEW mensual ===
-function renderOverview() {
-  updateMonthLabels();
-  const cardsContainer = document.getElementById("overview-cards");
-  const monthNav = document.getElementById("month-nav-cards");
-
-  if (!cardsContainer || !monthNav) return;
-
-  const stats = computeMonthStats(selectedYear, selectedMonth);
-  const income = stats.income;
-  const facturas = stats.facturas;
-  const gastos = stats.gastos;
-  const totalExpenses = facturas + gastos;
-  const balance = stats.balance;
-
-  cardsContainer.innerHTML = "";
-
-  const cardsData = [
-    {
-      label: "Ingresos (mes)",
-      value: income,
-      className: "income"
-    },
-    {
-      label: "Gastos totales (facturas + variables)",
-      value: totalExpenses,
-      className: "expense"
-    },
-    {
-      label: "Balance final (ahorro mes)",
-      value: balance,
-      className: "balance",
-      note: balance >= 0 ? "Mes en positivo." : "Mes en negativo."
-    }
-  ];
-
-  cardsData.forEach((c) => {
-    const card = document.createElement("div");
-    card.className = "summary-card";
-
-    const labelEl = document.createElement("div");
-    labelEl.className = "summary-label";
-    labelEl.textContent = c.label;
-
-    const valueEl = document.createElement("div");
-    valueEl.className = "summary-value " + c.className;
-    valueEl.textContent = formatMoney(c.value) + " €";
-
-    card.appendChild(labelEl);
-    card.appendChild(valueEl);
-
-    if (c.note) {
-      const noteEl = document.createElement("div");
-      noteEl.className = "summary-note";
-      noteEl.textContent = c.note;
-      card.appendChild(noteEl);
-    }
-
-    cardsContainer.appendChild(card);
-  });
-
-  monthNav.innerHTML = "";
-
-  const navItems = [
-    { label: "Ingresos", view: "ingresos-view" },
-    { label: "Facturas", view: "facturas-view" },
-    { label: "Gastos", view: "gastos-view" },
-    { label: "Presupuesto", view: "presupuesto-view" }
-  ];
-
-  navItems.forEach((item) => {
-    const card = document.createElement("div");
-    card.className = "summary-card clickable";
-
-    card.addEventListener("click", () => {
-      showView(item.view);
-    });
-
-    const labelEl = document.createElement("div");
-    labelEl.className = "summary-label";
-    labelEl.textContent = MONTH_NAMES[selectedMonth] + " 2026";
-
-    const valueEl = document.createElement("div");
-    valueEl.className = "summary-value";
-    valueEl.textContent = item.label;
-
-    card.appendChild(labelEl);
-    card.appendChild(valueEl);
-    monthNav.appendChild(card);
-  });
-}
-
 // === Click tarjeta BALANCE TOTAL 2026 -> vista ahorro ===
 const totalSavingCard = document.getElementById("total-saving-card");
 if (totalSavingCard) {
@@ -1239,7 +1147,6 @@ function init() {
 
   renderYearDashboard();
   renderPresupuestoTables();
-  renderOverview();
   updateMonthLabels();
 
   // Cerrar por defecto el Resumen 2026
