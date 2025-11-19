@@ -27,7 +27,6 @@
         <img src="icons/icon-192.png" class="app-icon" alt="logo">
         <div>
           <div class="app-title">FRESAMELON 2026</div>
-          <div class="app-subtitle">VAMOS EQUIPO! 💪🏼</div>
         </div>
       </div>
     </header>
@@ -57,6 +56,7 @@
     <!-- HOME / DASHBOARD AÑO 2026 -->
     <section id="year-view" class="view active">
       <div class="year-hero">
+
         <div class="year-balance-wrapper">
           <div class="year-balance-card" id="total-saving-card">
             <div class="year-balance-top">
@@ -69,10 +69,10 @@
 
         <div class="current-month-summary">
           <div class="month-header">
-            Mes actual:
             <span id="current-month-label" class="month-label-strong"></span>
             <span class="badge-year">2026</span>
           </div>
+
           <div class="current-month-cards">
             <div class="summary-pill income-pill">
               <div class="pill-header">
@@ -93,21 +93,31 @@
         </div>
 
         <div class="year-collapsibles">
-          <button class="toggle-btn" data-target="month-expenses-panel">
-            RESUMEN MES
-          </button>
-          <div id="month-expenses-panel" class="toggle-panel">
+
+          <!-- segmented control -->
+          <div class="summary-switch">
+            <!-- la pastilla amarilla animada se inyecta por JS -->
+            <button class="summary-tab active" data-target="month-expenses-panel">
+              Resumen mes
+            </button>
+            <button class="summary-tab" data-target="year-grid-panel">
+              Resumen 2026
+            </button>
+          </div>
+
+          <!-- Panel: resumen mes (abierto por defecto) -->
+          <div id="month-expenses-panel" class="toggle-panel open">
             <div id="month-pie-chart" class="pie-chart"></div>
             <div id="month-expenses-legend" class="pie-legend"></div>
           </div>
 
-          <button class="toggle-btn open" data-target="year-grid-panel">
-            RESUMEN 2026
-          </button>
-          <div id="year-grid-panel" class="toggle-panel open">
+          <!-- Panel: resumen 2026 (cerrado por defecto) -->
+          <div id="year-grid-panel" class="toggle-panel">
             <div class="year-grid" id="year-grid"></div>
           </div>
+
         </div>
+
       </div>
     </section>
 
@@ -400,6 +410,22 @@
           <div class="form-row">
             <button class="btn btn-primary" id="pre-gas-save-btn" type="button">Guardar presupuesto gasto</button>
           </div>
+
+          <!-- Objetivo de ahorro 2026 -->
+          <div class="section-subtitle">Objetivo de ahorro 2026</div>
+          <p class="hint">Define cuánto quieres ahorrar en todo 2026.</p>
+          <div class="form-row">
+            <input
+              type="number"
+              id="pre-savings-goal"
+              placeholder="Objetivo total de ahorro (ej. 5000)"
+              step="0.01"
+              min="0"
+            />
+            <button class="btn btn-primary" id="pre-savings-goal-save-btn" type="button">
+              Guardar objetivo
+            </button>
+          </div>
         </div>
 
         <div>
@@ -436,31 +462,59 @@
 
     <!-- AHORRO 2026 -->
     <section id="savings-view" class="view">
-      <div class="section-title">AHORRO 2026 – EVOLUCIÓN</div>
-      <p class="section-description">
-        Gráfico y tabla del ahorro mensual a lo largo de 2026. Se irá rellenando conforme avance el año.
-      </p>
+      <div class="section-title">AHORRO</div>
 
-      <div class="section-subtitle">RESUMEN ANUAL</div>
-      <div class="summary-cards" id="year-summary-cards"></div>
+      <!-- tarjetas tipo dashboard: ingresos / gastos / balance (se rellenan por JS) -->
+      <div id="year-summary-cards"></div>
 
-      <div class="section-subtitle" style="margin-top: 14px;">Gráfico ahorro mensual</div>
+      <!-- barra de progreso contra el objetivo -->
+      <div id="savings-goal-section"></div>
+
+      <div class="section-subtitle savings-evolution-header">
+        <span>EVOLUCIÓN</span>
+        <button
+          type="button"
+          class="info-icon-btn"
+          aria-label="Información sobre el gráfico de evolución"
+        >
+          i
+        </button>
+      </div>
+
       <div id="savings-chart"></div>
 
-      <div class="section-subtitle">Detalle por mes</div>
-      <div class="table-wrapper">
-        <table id="savings-table">
-          <thead>
-            <tr>
-              <th>Mes</th>
-              <th>Ahorro mes</th>
-              <th>Ahorro acumulado</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+      <button class="toggle-btn savings-detail-toggle" type="button">
+        DETALLE POR MES
+      </button>
+      <div id="savings-detail-panel" class="toggle-panel">
+        <div class="table-wrapper">
+          <table id="savings-table">
+            <thead>
+              <tr>
+                <th>Mes</th>
+                <th>Ahorro mes</th>
+                <th>Ahorro acumulado</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tarjetita de información superpuesta -->
+      <div id="evolution-info-overlay" class="info-overlay">
+        <div class="info-card">
+          <p class="info-card-text">
+            Gráfico y tabla del ahorro mensual a lo largo de 2026. Se irá rellenando
+            conforme avance el año.
+          </p>
+          <button type="button" class="btn btn-ghost btn-close-info">
+            Cerrar
+          </button>
+        </div>
       </div>
     </section>
+
   </div>
 
   <!-- LÓGICA JS -->
