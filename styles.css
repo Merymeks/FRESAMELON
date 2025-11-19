@@ -6,11 +6,15 @@
   gap: 14px;
 }
 
-/* Big annual balance card – sin wrapper blanco */
+.year-balance-wrapper {
+  margin-bottom: 4px;
+}
+
+/* Big annual balance card */
 .year-balance-card {
   padding: 18px 20px;
   border-radius: 26px;
-  background: rgba(255, 241, 118, 0.9); /* #fff176 más intenso */
+  background: rgba(255, 241, 118, 0.9);
   border: none;
   color: #1f2933;
 }
@@ -54,7 +58,7 @@
   flex-shrink: 0;
 }
 
-/* Current month summary – sin fondo blanco envolviendo */
+/* Current month summary */
 .current-month-summary {
   background: transparent;
   border: none;
@@ -128,6 +132,13 @@
   border-radius: 14px;
   background: #ffffff;
   border: 1px solid #e5e7eb;
+  cursor: pointer;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.month-card:hover {
+  background: #f9fafb;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
 }
 
 .month-name {
@@ -142,6 +153,18 @@
   font-weight: 600;
 }
 
+.month-saving.positive {
+  color: #16a34a;
+}
+
+.month-saving.negative {
+  color: #dc2626;
+}
+
+.month-saving.zero {
+  color: #6b7280;
+}
+
 .month-note {
   font-size: 10px;
   color: #9ca3af;
@@ -153,4 +176,166 @@
   .year-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+
+/* ===== MENÚ DE ICONOS CIRCULARES ===== */
+
+.tabs.tabs-icons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: none;
+  padding: 10px 6px 4px;
+  margin: 6px 0 4px;
+}
+
+.tabs-icons .tab-btn {
+  border: none;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+/* IMPORTANTE: eliminar fondo del hover / activo heredado */
+.tabs-icons .tab-btn:hover,
+.tabs-icons .tab-btn.active {
+  background: transparent;
+}
+
+/* Círculo blanco con sombra para el icono */
+.tab-icon-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 23px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+/* HOVER: círculo amarillo */
+.tabs-icons .tab-btn:hover .tab-icon-circle {
+  background: #FFF176;
+  color: #1a1a1a;
+}
+
+/* ACTIVO: círculo negro */
+.tabs-icons .tab-btn.active .tab-icon-circle {
+  background: #1a1a1a;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+}
+
+/* ===== Desplegables dashboard año ===== */
+
+.year-collapsibles {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.toggle-btn {
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  transition:
+    background 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.12s ease;
+}
+
+.toggle-btn::after {
+  content: "▾";
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.toggle-btn.open::after {
+  content: "▴";
+}
+
+.toggle-btn:hover {
+  background: #fdf4a8;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.toggle-panel {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  border-radius: 12px;
+  transition:
+    max-height 0.25s ease,
+    opacity 0.25s ease,
+    margin-top 0.25s ease;
+}
+
+/* panel abierto */
+.toggle-panel.open {
+  max-height: 600px;
+  opacity: 1;
+  margin-top: 4px;
+}
+
+/* Pie chart + leyenda */
+
+.pie-chart {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0 4px;
+}
+
+.pie-chart svg {
+  max-width: 220px;
+  width: 100%;
+  height: auto;
+}
+
+.pie-legend {
+  padding: 0 10px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+}
+
+.pie-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pie-legend-color {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.pie-legend-label {
+  flex: 1;
+}
+
+.pie-legend-value {
+  white-space: nowrap;
+  color: #555;
+  font-weight: 500;
 }
