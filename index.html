@@ -11,12 +11,12 @@
 
   <!-- iOS standalone -->
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="FRESAMELON">
 
   <!-- Iconos iOS (crea estos archivos en /icons) -->
-  <link rel="manifest" href="manifeest.json">
-  <link rel="apple-touch-icon" sizes="512x512" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="icons/icon-512.png">
 
   <style>
     * {
@@ -435,7 +435,7 @@
     <header class="app-header">
       <div class="app-title">FRESAMELON</div>
       <div class="app-subtitle">
-        Ahorros mes a mes para todo el año 2026. VAMOS EQUIPO!
+        VAMOS EQUIPO!
       </div>
     </header>
 
@@ -450,26 +450,50 @@
     </nav>
 
     <!-- 2026 year view -->
-    <section id="year-view" class="view active">
-      <div class="section-title">MES A MES – 2026</div>
-      <p class="section-description">
-        Cada tarjeta muestra el ahorro del mes (ingresos − facturas − gastos). Haz clic en un mes para ver el detalle.
-      </p>
+   <!-- 2026 year view -->
+<section id="year-view" class="view active">
+  <div class="year-hero">
+    <!-- Card: annual total balance -->
+    <div class="year-balance-card total-saving-card" id="total-saving-card">
+      <div class="year-balance-label">Balance total 2026</div>
+      <div class="year-balance-value" id="total-saving-value">0.00 €</div>
+     
+    </div>
 
-      <div class="year-grid" id="year-grid"></div>
+    <!-- Current month summary (income + expenses) -->
+   <div class="current-month-summary">
+  <div class="current-month-header">
+    Mes actual: <span id="current-month-label">Enero</span> 2026
+  </div>
+  <div class="current-month-cards">
+  <!-- INGRESOS -->
+  <div class="summary-pill income-pill">
+    <div class="pill-header">
+      <div class="pill-icon">💰</div>
+      <div class="pill-label">INGRESOS MES</div>
+    </div>
+    <div class="pill-value" id="current-income-value">0.00 €</div>
+  </div>
 
-      <div class="total-saving-wrapper">
-        <div class="total-saving-card" id="total-saving-card">
-          <div class="total-saving-label">
-            AHORRO TOTAL ACUMULADO 2026
-          </div>
-          <div class="total-saving-value" id="total-saving-value">0.00 €</div>
-          <div class="small">
-            Haz clic para ver el gráfico de evolución del ahorro durante todo el año.
-          </div>
-        </div>
-      </div>
-    </section>
+  <!-- GASTOS -->
+  <div class="summary-pill expense-pill">
+    <div class="pill-header">
+      <div class="pill-icon">💸</div>
+      <div class="pill-label">GASTOS MES</div>
+    </div>
+    <div class="pill-value" id="current-expense-value">0.00 €</div>
+  </div>
+</div>
+  </div>
+</div>
+
+
+  <!-- 3×4 grid of months -->
+  <div class="year-grid" id="year-grid">
+    <!-- Filled by JS -->
+  </div>
+</section>
+
 
     <!-- Ingresos view -->
     <section id="ingresos-view" class="view">
@@ -880,7 +904,10 @@
     }
 
     let selectedYear = TARGET_YEAR;
-    let selectedMonth = 0; // 0 = enero
+const today = new Date();
+let selectedMonth =
+  today.getFullYear() === TARGET_YEAR ? today.getMonth() : 0; // current month if year is 2026, else enero
+
 
     // Tabs
     const tabButtons = document.querySelectorAll(".tab-btn");
@@ -992,66 +1019,89 @@
       return { totalIncome, totalExpenses, totalBalance };
     }
 
-    // Year 2026 dashboard
-    function renderYearDashboard() {
-      const grid = document.getElementById("year-grid");
-      const totalSavingValueEl = document.getElementById("total-saving-value");
-      const totalSavingCardEl = document.getElementById("total-saving-card");
+   // Year 2026 dashboard
+function renderYearDashboard() {
+  const grid = document.getElementById("year-grid");
+  const totalSavingValueEl = document.getElementById("total-saving-value");
+  const totalSavingCardEl = document.getElementById("total-saving-card");
 
-      grid.innerHTML = "";
-      let totalSaving = 0;
+  grid.innerHTML = "";
+  let totalSaving = 0;
 
-      for (let m = 0; m < 12; m++) {
-        const stats = computeMonthStats(TARGET_YEAR, m);
-        const bal = stats.balance;
-        totalSaving += bal;
+  // Build 3×4 grid of months
+  for (let m = 0; m < 12; m++) {
+    const stats = computeMonthStats(TARGET_YEAR, m);
+    const bal = stats.balance;
+    totalSaving += bal;
 
-        const card = document.createElement("div");
-        card.className = "month-card";
-        card.addEventListener("click", () => {
-          selectedYear = TARGET_YEAR;
-          selectedMonth = m;
-          showView("overview-view");
-        });
+    const card = document.createElement("div");
+    card.className = "month-card";
+    card.addEventListener("click", () => {
+      selectedYear = TARGET_YEAR;
+      selectedMonth = m;
+      showView("overview-view");
+    });
 
-        const nameEl = document.createElement("div");
-        nameEl.className = "month-name";
-        nameEl.textContent = MONTH_NAMES[m];
+    const nameEl = document.createElement("div");
+    nameEl.className = "month-name";
+    nameEl.textContent = MONTH_NAMES[m];
 
-        const savingEl = document.createElement("div");
-        savingEl.className = "month-saving";
-        let cls = "zero";
-        if (bal > 0) cls = "positive";
-        else if (bal < 0) cls = "negative";
-        savingEl.classList.add(cls);
-        savingEl.textContent = formatMoney(bal) + " €";
+    const savingEl = document.createElement("div");
+    savingEl.className = "month-saving";
+    if (bal > 0) savingEl.classList.add("positive");
+    else if (bal < 0) savingEl.classList.add("negative");
+    else savingEl.classList.add("zero");
+    savingEl.textContent = formatMoney(bal) + " €";
 
-        const noteEl = document.createElement("div");
-        noteEl.className = "month-note";
-        if (bal === 0) {
-          noteEl.textContent = "Sin datos o ahorro 0 €";
-        } else if (bal > 0) {
-          noteEl.textContent = "Mes en positivo";
-        } else {
-          noteEl.textContent = "Mes en negativo";
-        }
-
-        card.appendChild(nameEl);
-        card.appendChild(savingEl);
-        card.appendChild(noteEl);
-
-        grid.appendChild(card);
-      }
-
-      totalSavingValueEl.textContent = formatMoney(totalSaving) + " €";
-
-      totalSavingCardEl.classList.remove("positive", "negative");
-      if (totalSaving > 0) {
-        totalSavingCardEl.classList.add("positive");
-      } else if (totalSaving < 0) {
-        totalSavingCardEl.classList.add("negative");
-      }
+    const noteEl = document.createElement("div");
+    noteEl.className = "month-note";
+    if (bal === 0) {
+      noteEl.textContent = "Sin datos o ahorro 0 €";
+    } else if (bal > 0) {
+      noteEl.textContent = "Mes en positivo";
+    } else {
+      noteEl.textContent = "Mes en negativo";
     }
+
+    card.appendChild(nameEl);
+    card.appendChild(savingEl);
+    card.appendChild(noteEl);
+
+    grid.appendChild(card);
+  }
+
+  // Update annual total balance card
+  totalSavingValueEl.textContent = formatMoney(totalSaving) + " €";
+
+  if (totalSavingCardEl) {
+    totalSavingCardEl.classList.remove("positive", "negative");
+    if (totalSaving > 0) {
+      totalSavingCardEl.classList.add("positive");
+    } else if (totalSaving < 0) {
+      totalSavingCardEl.classList.add("negative");
+    }
+  }
+
+  // Update current month summary pills (income + total expenses)
+  const currentMonthLabel = document.getElementById("current-month-label");
+  const currentIncomeEl = document.getElementById("current-income-value");
+  const currentExpenseEl = document.getElementById("current-expense-value");
+
+  const statsCurrent = computeMonthStats(TARGET_YEAR, selectedMonth);
+  const totalExpensesCurrent = statsCurrent.facturas + statsCurrent.gastos;
+
+  if (currentMonthLabel) {
+    currentMonthLabel.textContent = MONTH_NAMES[selectedMonth];
+  }
+  if (currentIncomeEl) {
+    currentIncomeEl.textContent = formatMoney(statsCurrent.income) + " €";
+  }
+  if (currentExpenseEl) {
+    currentExpenseEl.textContent =
+      formatMoney(totalExpensesCurrent) + " €";
+  }
+}
+
 
     // Ahorro 2026 view
     function renderSavingsView() {
