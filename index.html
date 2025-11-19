@@ -1120,16 +1120,12 @@ function renderYearDashboard() {
     grid.appendChild(card);
   }
 
-  // Update annual total balance card
+ // Update annual total balance card
   totalSavingValueEl.textContent = formatMoney(totalSaving) + " €";
 
+  // Siempre amarilla: no añadimos clases según el balance
   if (totalSavingCardEl) {
     totalSavingCardEl.classList.remove("positive", "negative");
-    if (totalSaving > 0) {
-      totalSavingCardEl.classList.add("positive");
-    } else if (totalSaving < 0) {
-      totalSavingCardEl.classList.add("negative");
-    }
   }
 
   // Update current month summary pills (income + total expenses)
