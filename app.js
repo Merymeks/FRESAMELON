@@ -233,109 +233,221 @@ function renderMonthExpensesPie() \{\
   \});\
 \}\
 \
-function computeYearSavings() \{\
-  const balances = [];\
-  for (let m = 0; m < 12; m++) \{\
-    const stats = computeMonthStats(TARGET_YEAR, m);\
-    balances.push(stats.balance);\
-  \}\
-  return balances;\
-\}\
-\
-function computeYearTotals() \{\
-  let totalIncome = 0;\
-  let totalFacturas = 0;\
-  let totalGastos = 0;\
-\
-  for (let m = 0; m < 12; m++) \{\
-    const stats = computeMonthStats(TARGET_YEAR, m);\
-    totalIncome += stats.income;\
-    totalFacturas += stats.facturas;\
-    totalGastos += stats.gastos;\
-  \}\
-\
-  const totalExpenses = totalFacturas + totalGastos;\
-  const totalBalance = totalIncome - totalExpenses;\
-\
-  return \{ totalIncome, totalExpenses, totalBalance \};\
-\}\
-\
-// Dashboard a\'f1o\
-function renderYearDashboard() \{\
-  const grid = document.getElementById("year-grid");\
-  const totalSavingValueEl = document.getElementById("total-saving-value");\
-  const totalSavingCardEl = document.getElementById("total-saving-card");\
-  const currentMonthLabel = document.getElementById("current-month-label");\
-  const currentIncomeEl = document.getElementById("current-income-value");\
-  const currentExpenseEl = document.getElementById("current-expense-value");\
-\
-  if (!grid || !totalSavingValueEl) return;\
-\
-  grid.innerHTML = "";\
-  let totalSaving = 0;\
-\
-  for (let m = 0; m < 12; m++) \{\
-    const stats = computeMonthStats(TARGET_YEAR, m);\
-    const bal = stats.balance;\
-    totalSaving += bal;\
-\
-    const card = document.createElement("div");\
-    card.className = "month-card";\
-    card.addEventListener("click", () => \{\
-      selectedYear = TARGET_YEAR;\
-      selectedMonth = m;\
-      showView("overview-view");\
-    \});\
-\
-    const nameEl = document.createElement("div");\
-    nameEl.className = "month-name";\
-    nameEl.textContent = MONTH_NAMES[m];\
-\
-    const savingEl = document.createElement("div");\
-    savingEl.className = "month-saving";\
-    if (bal > 0) savingEl.classList.add("positive");\
-    else if (bal < 0) savingEl.classList.add("negative");\
-    else savingEl.classList.add("zero");\
-    savingEl.textContent = formatMoney(bal) + " \'80";\
-\
-    const noteEl = document.createElement("div");\
-    noteEl.className = "month-note";\
-    if (bal === 0) \{\
-      noteEl.textContent = "Sin datos o ahorro 0 \'80";\
-    \} else if (bal > 0) \{\
-      noteEl.textContent = "Mes en positivo";\
-    \} else \{\
-      noteEl.textContent = "Mes en negativo";\
-    \}\
-\
-    card.appendChild(nameEl);\
-    card.appendChild(savingEl);\
-    card.appendChild(noteEl);\
-    grid.appendChild(card);\
-  \}\
-\
-  totalSavingValueEl.textContent = formatMoney(totalSaving) + " \'80";\
-  if (totalSavingCardEl) \{\
-    totalSavingCardEl.classList.remove("positive", "negative");\
-  \}\
-\
-  const statsCurrent = computeMonthStats(TARGET_YEAR, selectedMonth);\
-  const totalExpensesCurrent = statsCurrent.facturas + statsCurrent.gastos;\
-\
-  if (currentMonthLabel) \{\
-    currentMonthLabel.textContent = MONTH_NAMES[selectedMonth];\
-  \}\
-  if (currentIncomeEl) \{\
-    currentIncomeEl.textContent = formatMoney(statsCurrent.income) + " \'80";\
-  \}\
-  if (currentExpenseEl) \{\
-    currentExpenseEl.textContent = formatMoney(totalExpensesCurrent) + " \'80";\
-  \}\
-\
-  // Pie chart del mes actual\
-  renderMonthExpensesPie();\
-\}\
-\
+function computeYearSavings() {
+  const balances = [];
+  for (let m = 0; m < 12; m++) {
+    const stats = computeMonthStats(TARGET_YEAR, m);
+    balances.push(stats.balance);
+  }
+  return balances;
+}
+
+function computeYearTotals() {
+  let totalIncome = 0;
+  let totalFacturas = 0;
+  let totalGastos = 0;
+
+  for (let m = 0; m < 12; m++) {
+    const stats = computeMonthStats(TARGET_YEAR, m);
+    totalIncome += stats.income;
+    totalFacturas += stats.facturas;
+    totalGastos += stats.gastos;
+  }
+
+  const totalExpenses = totalFacturas + totalGastos;
+  const totalBalance = totalIncome - totalExpenses;
+
+  return { totalIncome, totalExpenses, totalBalance };
+}
+
+// Gastos del mes por categoría (facturas + gastos)
+function computeMonthExpensesByCategory(year, monthIndex) {
+  const monthTx = getTransactionsForMonth(year, monthIndex)
+    .filter((tx) => tx.type === "expense");
+
+  const map = {};
+  monthTx.forEach((tx) => {
+    const amt = Number(tx.amount) || 0;
+    if (!amt) return;
+    const key = tx.category || "Otros";
+    map[key] = (map[key] || 0) + amt;
+  });
+
+  return map; // {Categoría: total}
+}
+
+// Dibuja un donut chart simple en SVG
+function renderMonthExpensesPie() {
+  const container = document.getElementById("month-pie-chart");
+  const legend = document.getElementById("month-expenses-legend");
+  if (!container || !legend) return;
+
+  const dataMap = computeMonthExpensesByCategory(TARGET_YEAR, selectedMonth);
+  const entries = Object.entries(dataMap).sort((a, b) => b[1] - a[1]);
+  const total = entries.reduce((sum, [, v]) => sum + v, 0);
+
+  if (!total) {
+    container.innerHTML = "<div class='small'>Sin gastos en este mes.</div>";
+    legend.innerHTML = "";
+    return;
+  }
+
+  const colors = [
+    "#f97373", "#fb923c", "#facc15",
+    "#22c55e", "#2dd4bf", "#3b82f6",
+    "#a855f7", "#ec4899", "#78716c"
+  ];
+
+  const cx = 90;
+  const cy = 90;
+  const rOuter = 80;
+  const rInner = 48;
+  let currentAngle = -Math.PI / 2; // empezamos arriba
+
+  function polarToCartesian(r, angle) {
+    return {
+      x: cx + r * Math.cos(angle),
+      y: cy + r * Math.sin(angle)
+    };
+  }
+
+  let paths = "";
+
+  entries.forEach(([label, value], index) => {
+    const fraction = value / total;
+    const angle = fraction * Math.PI * 2;
+    const startAngle = currentAngle;
+    const endAngle = currentAngle + angle;
+    currentAngle = endAngle;
+
+    const start = polarToCartesian(rOuter, startAngle);
+    const end = polarToCartesian(rOuter, endAngle);
+    const largeArc = angle > Math.PI ? 1 : 0;
+    const color = colors[index % colors.length];
+
+    const pathData = [
+      `M ${cx} ${cy}`,
+      `L ${start.x} ${start.y}`,
+      `A ${rOuter} ${rOuter} 0 ${largeArc} 1 ${end.x} ${end.y}`,
+      "Z"
+    ].join(" ");
+
+    paths += `<path d="${pathData}" fill="${color}"></path>`;
+  });
+
+  const svg = `
+    <svg viewBox="0 0 180 180">
+      ${paths}
+      <circle cx="${cx}" cy="${cy}" r="${rInner}" fill="#f5f5f5"></circle>
+    </svg>
+  `;
+  container.innerHTML = svg;
+
+  legend.innerHTML = "";
+  entries.forEach(([label, value], index) => {
+    const color = colors[index % colors.length];
+    const pct = ((value / total) * 100).toFixed(1);
+
+    const row = document.createElement("div");
+    row.className = "pie-legend-item";
+
+    const dot = document.createElement("span");
+    dot.className = "pie-legend-color";
+    dot.style.backgroundColor = color;
+
+    const lab = document.createElement("span");
+    lab.className = "pie-legend-label";
+    lab.textContent = label;
+
+    const val = document.createElement("span");
+    val.className = "pie-legend-value";
+    val.textContent = `${formatMoney(value)} € (${pct}%)`;
+
+    row.appendChild(dot);
+    row.appendChild(lab);
+    row.appendChild(val);
+    legend.appendChild(row);
+  });
+}
+
+// Dashboard año 2026
+function renderYearDashboard() {
+  const grid = document.getElementById("year-grid");
+  const totalSavingValueEl = document.getElementById("total-saving-value");
+  const totalSavingCardEl = document.getElementById("total-saving-card");
+  const currentMonthNameEl = document.getElementById("current-month-name");
+  const currentIncomeEl = document.getElementById("current-income-value");
+  const currentExpenseEl = document.getElementById("current-expense-value");
+
+  if (grid) grid.innerHTML = "";
+  let totalSaving = 0;
+
+  for (let m = 0; m < 12; m++) {
+    const stats = computeMonthStats(TARGET_YEAR, m);
+    const bal = stats.balance;
+    totalSaving += bal;
+
+    const card = document.createElement("div");
+    card.className = "month-card";
+    card.addEventListener("click", () => {
+      selectedYear = TARGET_YEAR;
+      selectedMonth = m;
+      showView("overview-view");
+    });
+
+    const nameEl = document.createElement("div");
+    nameEl.className = "month-name";
+    nameEl.textContent = MONTH_NAMES[m];
+
+    const savingEl = document.createElement("div");
+    savingEl.className = "month-saving";
+    if (bal > 0) savingEl.classList.add("positive");
+    else if (bal < 0) savingEl.classList.add("negative");
+    else savingEl.classList.add("zero");
+    savingEl.textContent = formatMoney(bal) + " €";
+
+    const noteEl = document.createElement("div");
+    noteEl.className = "month-note";
+    if (bal === 0) {
+      noteEl.textContent = "Sin datos o ahorro 0 €";
+    } else if (bal > 0) {
+      noteEl.textContent = "Mes en positivo";
+    } else {
+      noteEl.textContent = "Mes en negativo";
+    }
+
+    card.appendChild(nameEl);
+    card.appendChild(savingEl);
+    card.appendChild(noteEl);
+
+    if (grid) grid.appendChild(card);
+  }
+
+  if (totalSavingValueEl) {
+    totalSavingValueEl.textContent = formatMoney(totalSaving) + " €";
+  }
+  if (totalSavingCardEl) {
+    totalSavingCardEl.classList.remove("positive", "negative");
+  }
+
+  const statsCurrent = computeMonthStats(TARGET_YEAR, selectedMonth);
+  const totalExpensesCurrent = statsCurrent.facturas + statsCurrent.gastos;
+
+  if (currentMonthNameEl) {
+    currentMonthNameEl.textContent = MONTH_NAMES[selectedMonth];
+  }
+  if (currentIncomeEl) {
+    currentIncomeEl.textContent = formatMoney(statsCurrent.income) + " €";
+  }
+  if (currentExpenseEl) {
+    currentExpenseEl.textContent =
+      formatMoney(totalExpensesCurrent) + " €";
+  }
+
+  // actualiza el donut
+  renderMonthExpensesPie();
+}
+
 // Ahorro 2026\
 function renderSavingsView() \{\
   const data = computeYearSavings();\
